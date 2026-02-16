@@ -2,99 +2,180 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register</title>
+    <title>Student Registration</title>
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          rel="stylesheet">
 </head>
 
 <body class="bg-light">
 
 <div class="container mt-5">
-
     <div class="row justify-content-center">
         <div class="col-md-6">
 
             <div class="card shadow p-4">
 
-                <h3 class="text-center mb-4">User Registration</h3>
+                <h3 class="text-center mb-4">Student Registration</h3>
 
+                <!-- Google Sign-In Button -->
+                <button type="button"
+                        id="googleSignIn"
+                        class="btn btn-danger w-100 mb-3">
+                    Sign in with Google
+                </button>
+
+                <hr/>
+
+                <!-- Manual Registration (Optional) -->
                 <form id="registerForm">
 
-                    <!-- Username -->
                     <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
+                        <label class="form-label">Username</label>
                         <input type="text"
                                id="username"
-                               name="username"
                                class="form-control">
                     </div>
 
-                    <!-- Email -->
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
+                        <label class="form-label">Email</label>
                         <input type="email"
                                id="email"
-                               name="email"
                                class="form-control">
                     </div>
 
-                    <!-- Password -->
                     <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
+                        <label class="form-label">Password</label>
                         <input type="password"
                                id="password"
-                               name="password"
                                class="form-control">
                     </div>
 
                     <button type="submit"
                             class="btn btn-primary w-100">
-                        Register
+                        Register Manually
                     </button>
 
                 </form>
 
             </div>
-
         </div>
     </div>
-
 </div>
 
-<!-- Toast -->
-<div class="toast-container position-fixed top-0 end-0 p-3">
-
-    <div id="errorToast"
-         class="toast align-items-center text-bg-danger border-0"
-         role="alert">
-
-        <div class="d-flex">
-            <div class="toast-body" id="toastMsg">
-                Message
-            </div>
-
-            <button type="button"
-                    class="btn-close btn-close-white me-2 m-auto"
-                    data-bs-dismiss="toast">
-            </button>
-        </div>
-
-    </div>
-
-</div>
-
-<!-- Bootstrap JS (Place at bottom for proper loading) -->
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
+<!-- Firebase Module -->
+<script type="module">
 
-    document.addEventListener("DOMContentLoaded", function () {
+    import { initializeApp } from
+            "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
 
-        const form = document.getElementById("registerForm");
+    import { getAuth, GoogleAuthProvider, signInWithPopup }
+        from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
 
-        form.addEventListener("submit", function(e) {
+    import { signInWithRedirect, getRedirectResult }
+        from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyCGXRtrYvJG9-0m1R681_82cdIS1Atnv-o",
+        authDomain: "registration-b5065.firebaseapp.com",
+        projectId: "registration-b5065",
+        storageBucket: "registration-b5065.firebasestorage.app",
+        messagingSenderId: "545035780178",
+        appId: "1:545035780178:web:93983fc187cdf4febedf8b",
+        measurementId: "G-Z2ZF1P2YJC"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+
+    // Google Sign-In
+    document.getElementById("googleSignIn")
+        .addEventListener("click", async () => {
+
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+
+                const email = user.email;
+
+                // Restrict domain
+                if (!email.endsWith("@kanchiuniv.ac.in")) {
+                    alert("Only kanchiuniv.ac.in email allowed");
+                    return;
+                }
+
+                const token = await user.getIdToken();
+
+                const response = await fetch("/google-login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+
+                const data = await response.json();
+
+                if (data.status === "SUCCESS") {
+                    window.location.href = "/success";
+                } else {
+                    alert(data.message);
+                }
+
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+    getRedirectResult(auth)
+        .then(async (result) => {
+
+            if (!result) return;
+
+            const user = result.user;
+            const email = user.email;
+
+            // Restrict to university domain
+            if (!email.endsWith("@kanchiuniv.ac.in")) {
+                alert("Only kanchiuniv.ac.in accounts allowed");
+                return;
+            }
+
+            const token = await user.getIdToken();
+
+            // Send token to Spring Boot backend
+            const response = await fetch("/google-login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ token: token })
+            });
+
+            const data = await response.json();
+
+            if (data.status === "SUCCESS") {
+                window.location.href = "/success.jsp";
+            } else {
+                alert(data.message);
+            }
+
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+
+
+    // Manual Registration (Optional)
+    document.getElementById("registerForm")
+        .addEventListener("submit", async function (e) {
 
             e.preventDefault();
 
@@ -103,62 +184,36 @@
             const password = document.getElementById("password").value.trim();
 
             if (!username || !email || !password) {
-                showToast("All fields are required!");
+                alert("All fields required");
                 return;
             }
 
-            if (!email.endsWith("@gmail.com")) {
-                showToast("Email must end with @gmail.com");
+            if (!email.endsWith("@kanchiuniv.ac.in")) {
+                alert("Email must end with @kanchiuniv.ac.in");
                 return;
             }
 
             if (password.length < 6 || password.length > 8) {
-                showToast("Password must be 6 to 8 characters");
+                alert("Password must be 6-8 characters");
                 return;
             }
 
-            const formData = new FormData(form);
-
-            fetch("/register", {
+            const response = await fetch("/register", {
                 method: "POST",
-                body: formData
-            })
-                .then(response => response.json())
-                .then(data => {
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, email, password })
+            });
 
-                    let toastElement = document.getElementById("errorToast");
+            const data = await response.json();
 
-                    // Remove previous color classes
-                    toastElement.classList.remove("bg-danger", "bg-success");
-
-                    if (data.status === "SUCCESS") {
-                        toastElement.classList.add("bg-success");
-                    } else {
-                        toastElement.classList.add("bg-danger");
-                    }
-
-                    document.getElementById("toastMsg").innerText = data.message;
-
-                    let toast = new bootstrap.Toast(toastElement);
-                    toast.show();
-
-                    if (data.status === "SUCCESS") {
-                        document.getElementById("registerForm").reset();
-                        window.location.href = "/success";   // if needed
-                    }
-
-                })
-
+            if (data.status === "SUCCESS") {
+                window.location.href = "/success";
+            } else {
+                alert(data.message);
+            }
         });
-
-    });
-
-    function showToast(message) {
-        document.getElementById("toastMsg").innerText = message;
-        const toastElement = document.getElementById("errorToast");
-        const toast = new bootstrap.Toast(toastElement);
-        toast.show();
-    }
 
 </script>
 
