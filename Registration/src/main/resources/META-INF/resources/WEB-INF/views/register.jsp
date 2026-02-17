@@ -62,7 +62,8 @@
                         <input type="text"
                                id="username"
                                name="username"
-                               class="form-control">
+                               class="form-control"
+                               required>
                     </div>
 
                     <div class="mb-3">
@@ -70,7 +71,9 @@
                         <input type="email"
                                id="email"
                                name="email"
-                               class="form-control">
+                               class="form-control"
+                               pattern="^[A-Za-z0-9._%+-]+@kanchiuniv\.ac\.in$"
+                               required>
                     </div>
 
                     <div class="mb-3">
@@ -78,7 +81,10 @@
                         <input type="password"
                                id="password"
                                name="password"
-                               class="form-control">
+                               class="form-control"
+                               minlength="6"
+                               maxlength="8"
+                               required>
                     </div>
 
                     <button type="submit"
@@ -204,7 +210,7 @@
             const data = await response.json();
 
             if (data.status === "SUCCESS") {
-                window.location.href = "/success.jsp";
+                window.location.href = "/success";
             } else {
                 alert(data.message);
             }
@@ -217,46 +223,46 @@
 
 
     // Manual Registration (Optional)
-    document.getElementById("registerForm")
-        .addEventListener("submit", async function (e) {
-
-            e.preventDefault();
-
-            const username = document.getElementById("username").value.trim();
-            const email = document.getElementById("email").value.trim();
-            const password = document.getElementById("password").value.trim();
-
-            if (!username || !email || !password) {
-                alert("All fields required");
-                return;
-            }
-
-            if (!email.endsWith("@kanchiuniv.ac.in")) {
-                alert("Email must end with @kanchiuniv.ac.in");
-                return;
-            }
-
-            if (password.length < 6 || password.length > 8) {
-                alert("Password must be 6-8 characters");
-                return;
-            }
-
-            const response = await fetch("/register", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username, email, password })
-            });
-
-            const data = await response.json();
-
-            if (data.status === "SUCCESS") {
-                window.location.href = "/success";
-            } else {
-                alert(data.message);
-            }
-        });
+    // document.getElementById("registerForm")
+    //     .addEventListener("submit", async function (e) {
+    //
+    //         e.preventDefault();
+    //
+    //         const username = document.getElementById("username").value.trim();
+    //         const email = document.getElementById("email").value.trim();
+    //         const password = document.getElementById("password").value.trim();
+    //
+    //         if (!username || !email || !password) {
+    //             alert("All fields required");
+    //             return;
+    //         }
+    //
+    //         if (!email.endsWith("@kanchiuniv.ac.in")) {
+    //             alert("Email must end with @kanchiuniv.ac.in");
+    //             return;
+    //         }
+    //
+    //         if (password.length < 6 || password.length > 8) {
+    //             alert("Password must be 6-8 characters");
+    //             return;
+    //         }
+    //
+    //         const response = await fetch("/register", {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify({ username, email, password })
+    //         });
+    //
+    //         const data = await response.json();
+    //
+    //         if (data.status === "SUCCESS") {
+    //             window.location.href = "/success";
+    //         } else {
+    //             alert(data.message);
+    //         }
+    //     });
 
 </script>
 

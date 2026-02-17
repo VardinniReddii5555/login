@@ -3,14 +3,14 @@ package com.emudhra.Registration.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "users",
-uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-})
+@Table(name = "users")
 public class Users {
 
     @Id
-    @Column(unique = true, nullable = false , length = 15)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false , length = 50)
     private String username;
 
     @Column(nullable = false,unique = true)
@@ -19,17 +19,25 @@ public class Users {
     @Column(nullable = false,length = 225)
     private String password;
 
+    @Column(nullable = false, length = 30)
+    private String registration_mode;
+
 
     // Getters & Setters
 
-    public Users(String username, String email, String password) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-    }
 
     public Users() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", registration_mode='" + registration_mode + '\'' +
+                '}';
     }
 
     public String getUsername() {
@@ -56,5 +64,19 @@ public class Users {
         this.password = password;
     }
 
+    public Long getId() {
+        return id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getRegistration_mode() {
+        return registration_mode;
+    }
+
+    public void setRegistration_mode(String registration_mode) {
+        this.registration_mode = registration_mode;
+    }
 }

@@ -1,7 +1,5 @@
 package com.emudhra.Registration.controller;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.emudhra.Registration.model.Users;
 import com.emudhra.Registration.repository.UserRepository;
 
@@ -11,9 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 public class HomeController {
@@ -49,8 +44,24 @@ public class HomeController {
                 return "register";
             }
 
+            if (!email.endsWith("@kanchiuniv.ac.in")) {
+                model.addAttribute("error", "Email must end with @kanchiuniv.ac.in");
+                return "register";
+            }
+
+            if (password.length() < 6 || password.length() > 8) {
+                model.addAttribute("error", "Password must be 6-8 characters");
+                return "register";
+            }
+
             String encryptedPassword = passwordEncoder.encode(password);
-            Users users = new Users(username, email, encryptedPassword);
+
+            Users users = new Users();
+            users.setUsername(username);
+            users.setEmail(email);
+            users.setPassword(encryptedPassword);
+            users.setRegistration_mode("MANUAL");
+            userRepository.save(users);
             userRepository.save(users);
 
             return "redirect:/success";
