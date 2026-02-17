@@ -11,6 +11,9 @@
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css">
+
+
     <style>
         body {
             background: linear-gradient(135deg, #e3f2fd, #ffffff);
@@ -43,9 +46,9 @@
         <a href="/register" class="btn btn-primary px-4">
             Another Registration
         </a>
-        <a href="/" class="btn btn-outline-secondary px-4 ms-2">
-            Home
-        </a>
+<%--        <a href="/" class="btn btn-outline-secondary px-4 ms-2">--%>
+<%--            Home--%>
+<%--        </a>--%>
     </div>
 </div>
 

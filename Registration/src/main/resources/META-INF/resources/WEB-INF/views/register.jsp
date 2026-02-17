@@ -7,9 +7,44 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
           rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/style.css">
+
 </head>
 
 <body class="bg-light">
+
+<c:if test="${not empty error}">
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+        <div id="errorToast"
+             class="toast align-items-center text-white border-0"
+             role="alert"
+             aria-live="assertive"
+             aria-atomic="true">
+
+            <div class="d-flex">
+                <div class="toast-body">
+                        ${error}
+                </div>
+                <button type="button"
+                        class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast"
+                        aria-label="Close">
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var toastEl = document.getElementById("errorToast");
+            toastEl.style.backgroundColor = "rgba(255, 0, 0, 0.60)";
+            var toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+            toast.show();
+        });
+    </script>
+</c:if>
 
 <div class="container mt-5">
     <div class="row justify-content-center">
@@ -19,22 +54,14 @@
 
                 <h3 class="text-center mb-4">Student Registration</h3>
 
-                <!-- Google Sign-In Button -->
-                <button type="button"
-                        id="googleSignIn"
-                        class="btn btn-danger w-100 mb-3">
-                    Sign in with Google
-                </button>
-
-                <hr/>
-
-                <!-- Manual Registration (Optional) -->
-                <form id="registerForm">
+                <!-- Manual Registration  -->
+                <form id="registerForm" action="/register" method="post">
 
                     <div class="mb-3">
                         <label class="form-label">Username</label>
                         <input type="text"
                                id="username"
+                               name="username"
                                class="form-control">
                     </div>
 
@@ -42,6 +69,7 @@
                         <label class="form-label">Email</label>
                         <input type="email"
                                id="email"
+                               name="email"
                                class="form-control">
                     </div>
 
@@ -49,6 +77,7 @@
                         <label class="form-label">Password</label>
                         <input type="password"
                                id="password"
+                               name="password"
                                class="form-control">
                     </div>
 
@@ -56,16 +85,30 @@
                             class="btn btn-primary w-100">
                         Register Manually
                     </button>
+                    <hr/>
 
-                </form>
+                    <div class="text-center">
+                        <button type="button"
+                                id="googleSignIn"
+                                class="btn btn-#300 border-#800 border-3 mb-3">
 
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                                 alt="Google logo"
+                                 style="width:18px; height:18px; margin-right:8px;">
+
+                            Sign in with Google
+                        </button>
+                    </div>
+                    </form>
             </div>
         </div>
     </div>
 </div>
+</body>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <!-- Firebase Module -->
 <script type="module">
