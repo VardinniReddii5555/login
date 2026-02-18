@@ -172,7 +172,7 @@
                 const data = await response.json();
 
                 if (data.status === "SUCCESS") {
-                    window.location.href = "/success";
+                    window.location.href = "/login";
                 } else {
                     alert(data.message);
                 }
@@ -210,7 +210,7 @@
             const data = await response.json();
 
             if (data.status === "SUCCESS") {
-                window.location.href = "/success";
+                window.location.href = "/dashboard";
             } else {
                 alert(data.message);
             }
@@ -219,52 +219,5 @@
         .catch(error => {
             console.error(error);
         });
-
-
-
-    // Manual Registration (Optional)
-    // document.getElementById("registerForm")
-    //     .addEventListener("submit", async function (e) {
-    //
-    //         e.preventDefault();
-    //
-    //         const username = document.getElementById("username").value.trim();
-    //         const email = document.getElementById("email").value.trim();
-    //         const password = document.getElementById("password").value.trim();
-    //
-    //         if (!username || !email || !password) {
-    //             alert("All fields required");
-    //             return;
-    //         }
-    //
-    //         if (!email.endsWith("@kanchiuniv.ac.in")) {
-    //             alert("Email must end with @kanchiuniv.ac.in");
-    //             return;
-    //         }
-    //
-    //         if (password.length < 6 || password.length > 8) {
-    //             alert("Password must be 6-8 characters");
-    //             return;
-    //         }
-    //
-    //         const response = await fetch("/register", {
-    //             method: "POST",
-    //             headers: {
-    //                 "Content-Type": "application/json"
-    //             },
-    //             body: JSON.stringify({ username, email, password })
-    //         });
-    //
-    //         const data = await response.json();
-    //
-    //         if (data.status === "SUCCESS") {
-    //             window.location.href = "/success";
-    //         } else {
-    //             alert(data.message);
-    //         }
-    //     });
-
 </script>
 
-</body>
-</html>

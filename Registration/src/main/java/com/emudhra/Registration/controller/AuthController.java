@@ -21,7 +21,7 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @PostMapping("/google-login")
+    @RequestMapping("/auth/google-login")
     public Map<String, String> googleLogin(@RequestBody Map<String, String> body) {
         String idToken = body.get("token");
 
@@ -33,7 +33,7 @@ public class AuthController {
             System.out.println("Received token: " + token);
 
             FirebaseToken decodedToken =
-                    FirebaseAuth.getInstance().verifyIdToken(token);
+                    FirebaseAuth.getInstance().verifyIdToken(idToken);
 
             String email = decodedToken.getEmail();
             String preferredUsername = decodedToken.getName() != null
@@ -85,7 +85,7 @@ public class AuthController {
         } catch (Exception e) {
             e.printStackTrace();
             response.put("status", "FAIL");
-            response.put("message", "Invalid token");
+            response.put("message", "Google Authentication Failed");
         }
 
         return response;

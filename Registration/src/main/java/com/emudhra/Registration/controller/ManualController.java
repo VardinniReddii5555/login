@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-public class HomeController {
+public class ManualController {
 
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public HomeController(UserRepository userRepository) {
+    public ManualController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -64,7 +64,7 @@ public class HomeController {
             userRepository.save(users);
             userRepository.save(users);
 
-            return "redirect:/success";
+            return "redirect:/login";
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,8 +72,8 @@ public class HomeController {
             return "register";
         }
     }
-    @GetMapping("/success")
-    public String successPage() {
-        return "success";
-    }
+//    @GetMapping("/success")
+//    public String successPage() {
+//        return "success";
+//    }
 }
