@@ -21,7 +21,7 @@ public class AuthController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @RequestMapping("/auth/google-login")
+    @PostMapping("/google-login")
     public Map<String, String> googleLogin(@RequestBody Map<String, String> body) {
         String idToken = body.get("token");
 
