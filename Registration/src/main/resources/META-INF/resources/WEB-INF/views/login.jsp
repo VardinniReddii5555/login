@@ -13,32 +13,7 @@
 
 <body>
 <div class="auth-bg">
-
-    <!-- Error Toast -->
-    <c:if test="${not empty error}">
-        <div class="position-fixed top-0 end-0 p-3" style="z-index:1100;">
-            <div class="toast align-items-center text-white border-0 bg-danger show">
-                <div class="d-flex">
-                    <div class="toast-body">${error}</div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                            data-bs-dismiss="toast"></button>
-                </div>
-            </div>
-        </div>
-    </c:if>
-
-    <!-- Success Toast -->
-    <c:if test="${not empty message}">
-        <div class="position-fixed top-0 end-0 p-3" style="z-index:1100; margin-top:70px;">
-            <div class="toast align-items-center text-white border-0 bg-success show">
-                <div class="d-flex">
-                    <div class="toast-body">${message}</div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                            data-bs-dismiss="toast"></button>
-                </div>
-            </div>
-        </div>
-    </c:if>
+    <%@ include file="/WEB-INF/views/common/toast.jspf" %>
 
     <div class="container py-5">
         <div class="row justify-content-center">
@@ -87,76 +62,18 @@
     </div>
 </div>
 
-<!-- Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Firebase Module -->
-<script type="module">
-
-    import { initializeApp }
-        from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
-
-    import { getAuth, GoogleAuthProvider, signInWithPopup }
-        from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyCGXRtrYvJG9-0m1R681_82cdIS1Atnv-o",
-        authDomain: "registration-b5065.firebaseapp.com",
-        projectId: "registration-b5065",
-        storageBucket: "registration-b5065.firebasestorage.app",
-        messagingSenderId: "545035780178",
-        appId: "1:545035780178:web:93983fc187cdf4febedf8b"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-
-    document.getElementById("googleSignIn")
-        .addEventListener("click", async () => {
-
-            try {
-
-                const result = await signInWithPopup(auth, provider);
-                const user = result.user;
-
-                const email = user.email;
-
-                // Restrict domain
-                if (!email.endsWith("@kanchiuniv.ac.in")) {
-                    alert("Only kanchiuniv.ac.in email allowed");
-                    return;
-                }
-
-                const token = await user.getIdToken();
-
-                const response = await fetch(
-                    "${pageContext.request.contextPath}/google-login",
-                    {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ token: token })
-                    }
-                );
-
-                const data = await response.json();
-                console.log("Backend response:", data);
-
-                if (data.status === "SUCCESS") {
-                    window.location.href =
-                        "${pageContext.request.contextPath}/dashboard";
-                } else {
-                    alert(data.message);
-                }
-
-            } catch (error) {
-                alert(error.message);
-            }
-        });
-
-</script>
+    <!-- Firebase Module -->
+    <script type="module">
+         import { attachGoogleSignIn } from "${pageContext.request.contextPath}/common/google-auth.js";
+        attachGoogleSignIn({
+                buttonId: "googleSignIn",
+                contextPath: "${pageContext.request.contextPath}",
+                successRedirectPath: "/dashboard"
+            });
+    </script>
 
 </body>
 </html>
