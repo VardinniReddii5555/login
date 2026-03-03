@@ -72,8 +72,4 @@ public class ManualController {
             return "register";
         }
     }
-//    @GetMapping("/success")
-//    public String successPage() {
-//        return "success";
-//    }
 }

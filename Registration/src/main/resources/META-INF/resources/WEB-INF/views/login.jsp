@@ -52,20 +52,10 @@
                           method="post"
                           class="d-grid gap-3">
 
-                        <input type="text"
-                               name="username"
-                               class="form-control form-control-lg"
-                               placeholder="Username"
-                               required>
-
-                        <input type="password"
-                               name="password"
-                               class="form-control form-control-lg"
-                               placeholder="Password"
-                               required>
-
+                        <input type="text" name="username" class="form-control " placeholder="Username" required>
+                        <input type="password" name="password" class="form-control" placeholder="Password" required>
                         <button type="submit"
-                                class="btn btn-primary btn-lg mt-2">
+                                class="btn btn-primary btn-md mt-2">
                             Login
                         </button>
                     </form>
@@ -76,7 +66,7 @@
                     <div class="text-center">
                         <button type="button"
                                 id="googleSignIn"
-                                class="btn btn-outline-dark mb-3">
+                                class="btn btn-#300 border-#800 border-3 mb-3">
 
                             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                                  style="width:18px; margin-right:8px;">

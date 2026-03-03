@@ -12,9 +12,13 @@
 <body class="auth-bg">
 <nav class="navbar bg-white shadow-sm">
     <div class="container">
-        <span class="navbar-brand fw-semibold">InsideBox Dashboard</span>
+        <span class="navbar-brand fw-semibold">HEYLLO!!! ${sessionScope.user.username}</span>
         <form action="/logout" method="post" style="display:inline;">
-            <button type="submit">LOG OUT</button>
+
+            <button type="submit"
+                    style="background-color: rgba(255, 0, 0, 0.8); color: white;">
+                LOG OUT
+            </button>
         </form>
 
     </div>
@@ -27,16 +31,16 @@
                 <h2 class="fw-bold mb-4">User Details</h2>
                 <dl class="row mb-0">
                     <dt class="col-sm-4">ID</dt>
-                    <dd class="col-sm-8">${user.id}</dd>
+                    <dd class="col-sm-8">${sessionScope.user.id}</dd>
 
                     <dt class="col-sm-4">Username</dt>
-                    <dd class="col-sm-8">${user.username}</dd>
+                    <dd class="col-sm-8">${sessionScope.user.username}</dd>
 
                     <dt class="col-sm-4">Email</dt>
-                    <dd class="col-sm-8">${user.email}</dd>
+                    <dd class="col-sm-8">${sessionScope.user.email}</dd>
 
                     <dt class="col-sm-4">Mode</dt>
-                    <dd class="col-sm-8">${user.registration_mode}</dd>
+                    <dd class="col-sm-8">${sessionScope.user.registration_mode}</dd>
                 </dl>
             </div>
         </div>

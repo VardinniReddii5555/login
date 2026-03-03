@@ -1,9 +1,12 @@
 package com.emudhra.Registration.controller;
 
+import com.emudhra.Registration.constants.LoginModes;
 import com.emudhra.Registration.model.Users;
 import com.emudhra.Registration.repository.UserRepository;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
+import com.emudhra.Registration.service.LoginAuditService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,14 +18,16 @@ public class AuthController {
 
     private final UserRepository userRepository;
     public final PasswordEncoder passwordEncoder;
+    private final LoginAuditService loginAuditService;
 
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder,LoginAuditService loginAuditService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.loginAuditService = loginAuditService;
     }
 
     @PostMapping("/google-login")
-    public Map<String, String> googleLogin(@RequestBody Map<String, String> body) {
+    public Map<String, String> googleLogin(@RequestBody Map<String, String> body ,HttpSession session) {
         String idToken = body.get("token");
 
         Map<String, String> response = new HashMap<>();
@@ -53,7 +58,9 @@ public class AuthController {
             }
 
             Users existingUser = userRepository.findByEmail(email);
+            Users activeUser;
 
+            Users authenticatedUser;
             if (existingUser == null) {
                 String username = preferredUsername;
                 int suffix = 1;
@@ -73,12 +80,20 @@ public class AuthController {
                 user.setEmail(email);
                 user.setPassword(generatedPassword);
                 user.setRegistration_mode("GOOGLE_SSO");
-                userRepository.save(user);
+                user.setRegistration_mode(LoginModes.GOOGLE_SSO);
+                activeUser = userRepository.save(user);
+//             Users savedUser = userRepository.save(user);
+                session.setAttribute("user", activeUser);
             } else {
                 existingUser.setRegistration_mode("GOOGLE_SSO");
-                userRepository.save(existingUser);
-            }
+                activeUser = userRepository.save(existingUser);
+                existingUser.setRegistration_mode(LoginModes.GOOGLE_SSO);
 
+//                Users savedUser = userRepository.save(existingUser);
+                session.setAttribute("user", activeUser);
+            }
+            loginAuditService.startSessionAudit(activeUser, session,LoginModes.MANUAL);
+//            session.setAttribute("user", authenticatedUser);
             response.put("status", "SUCCESS");
             response.put("message", "Login successful");
 

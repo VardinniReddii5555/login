@@ -1,11 +1,15 @@
 package com.emudhra.Registration.controller;
 
+import com.emudhra.Registration.constants.LoginModes;
+import com.emudhra.Registration.constants.SessionAttribute;
 import com.emudhra.Registration.model.Users;
 import com.emudhra.Registration.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import jakarta.servlet.http.HttpSession;
+import com.emudhra.Registration.service.LoginAuditService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,26 +27,28 @@ public class LoginController {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final LoginAuditService loginAuditService;
 
     private final Map<String, Integer> failedAttempts = new ConcurrentHashMap<>();
     private final Map<String, Instant> blockedUntil = new ConcurrentHashMap<>();
 
     @Autowired
-    public LoginController(PasswordEncoder passwordEncoder, UserRepository userRepository) {
+    public LoginController(PasswordEncoder passwordEncoder, UserRepository userRepository, LoginAuditService loginAuditService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.loginAuditService = loginAuditService;
     }
 
-    @GetMapping({"","/","/login"})
-    public String showLoginPage()
-    {
+    @GetMapping({"", "/", "/login"})
+    public String showLoginPage() {
         return "login";
     }
 
     @PostMapping("/login")
     public String loginUser(@RequestParam String username,
                             @RequestParam String password,
-                            Model model) {
+                            Model model,
+                            HttpSession session) {
 
         Instant currentTime = Instant.now();
         Instant blockExpiry = blockedUntil.get(username);
@@ -87,6 +93,9 @@ public class LoginController {
         // 3️⃣ Success
         failedAttempts.remove(username);
         blockedUntil.remove(username);
-        return "redirect:/dashboard";
+        loginAuditService.startSessionAudit(user, session, LoginModes.MANUAL);
+
+            session.setAttribute("user", user);
+            return "redirect:/dashboard";
     }
 }
