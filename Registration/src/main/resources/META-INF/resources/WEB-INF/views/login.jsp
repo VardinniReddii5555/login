@@ -46,7 +46,7 @@
                             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                                  style="width:18px; margin-right:8px;">
 
-                            Log in with Google
+                            Log in with Firebase
                         </button>
                     </div>
 
@@ -55,6 +55,15 @@
                         <a href="${pageContext.request.contextPath}/register"
                            class="fw-semibold">Register</a>
                     </p>
+                     <a class="btn btn-outline-primary"
+                                               href="${pageContext.request.contextPath}/oauth2/authorization/univ">
+                                                Login with OAuth2.0 (OIDC)
+                                            </a>
+
+                                            <a class="btn btn-outline-success"
+                                               href="${pageContext.request.contextPath}/oauth2/authorization/keycloak">
+                                                Login with Keycloak
+                                            </a>
 
                 </div>
             </div>
