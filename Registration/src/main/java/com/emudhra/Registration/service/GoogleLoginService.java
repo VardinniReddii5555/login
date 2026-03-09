@@ -1,5 +1,6 @@
 package com.emudhra.Registration.service;
 
+import com.emudhra.Registration.constants.SessionAttribute;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,7 @@ public class GoogleLoginService {
             }
 
             Users activeUser = upsertGoogleUser(decodedToken, email);
-            session.setAttribute("user", activeUser);
+            session.setAttribute(SessionAttribute.USER, activeUser);
             loginAuditService.startSessionAudit(activeUser, session, LoginModes.GOOGLE_SSO);
 
             return AuthResult.success("Login successful");

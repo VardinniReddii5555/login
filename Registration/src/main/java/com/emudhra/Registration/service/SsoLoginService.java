@@ -1,6 +1,9 @@
 package com.emudhra.Registration.service;
 
+import com.emudhra.Registration.constants.LoginModes;
+import com.emudhra.Registration.constants.SessionAttribute;
 import com.emudhra.Registration.model.Users;
+import com.emudhra.Registration.repository.LoginAuditRepository;
 import com.emudhra.Registration.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -35,7 +38,7 @@ public class SsoLoginService {
 
         Users activeUser = upsertSsoUser(email, oidcUser.getFullName(), subject, loginMode);
         session.setAttribute("user", activeUser);
-        loginAuditService.startSessionAudit(activeUser, session, loginMode);
+        session.setAttribute(SessionAttribute.USER, activeUser);
 
         return AuthResult.success("Login successful");
     }
@@ -62,7 +65,6 @@ public class SsoLoginService {
         user.setEmail(email);
         user.setPassword(passwordEncoder.encode(uniqueSourceId));
         user.setRegistration_mode(loginMode);
-
         return userRepository.save(user);
     }
 
@@ -79,7 +81,6 @@ public class SsoLoginService {
             username = base + suffixValue;
             suffix++;
         }
-
         return username;
     }
 }

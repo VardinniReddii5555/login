@@ -1,8 +1,6 @@
 package com.emudhra.Registration.controller;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.web.bind.annotation.*;
-
 import com.emudhra.Registration.service.AuthResponseFactory;
 import com.emudhra.Registration.service.AuthResult;
 import com.emudhra.Registration.service.GoogleLoginService;

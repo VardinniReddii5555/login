@@ -1,59 +1,51 @@
 package com.emudhra.Registration.config;
 
-import com.emudhra.Registration.constants.LoginModes;
-import com.emudhra.Registration.service.AuthResult;
-import com.emudhra.Registration.service.SsoLoginService;
-import com.emudhra.Registration.config.SecurityConfig;
+import com.emudhra.Registration.model.LoginAudit;
+import com.emudhra.Registration.model.Users;
+import com.emudhra.Registration.repository.LoginAuditRepository;
+import com.emudhra.Registration.repository.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import org.springframework.stereotype.Component;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
-@Component
-public class OidcAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+public class OidcAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-    private final SsoLoginService ssoLoginService;
-    private final SecurityConfig securityConfig;
+    private final UserRepository userRepository;
+    private final LoginAuditRepository loginAuditRepository;
 
-    public OidcAuthenticationSuccessHandler(SsoLoginService ssoLoginService , SecurityConfig securityConfig) {
-        this.ssoLoginService = ssoLoginService;
-        this.securityConfig = securityConfig;
+    public OidcAuthenticationSuccessHandler(UserRepository userRepository,
+                                            LoginAuditRepository loginAuditRepository) {
+        this.userRepository = userRepository;
+        this.loginAuditRepository = loginAuditRepository;
+
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
-        if (!(authentication instanceof OAuth2AuthenticationToken oauthToken)
-                || !(authentication.getPrincipal() instanceof OidcUser oidcUser)) {
-            response.sendRedirect(request.getContextPath() + "/login?error=unsupported_login_type");
-            return;
-        }
+                                        Authentication authentication)
+            throws IOException, ServletException {
 
-        String loginMode = resolveLoginMode(oauthToken.getAuthorizedClientRegistrationId());
-        HttpSession session = request.getSession(true);
-        AuthResult result = ssoLoginService.loginWithOidc(oidcUser, session, loginMode);
+        OidcUser oidcUser = (OidcUser) authentication.getPrincipal();
+        String username = oidcUser.getPreferredUsername();
 
-        if (!result.success()) {
-            response.sendRedirect(request.getContextPath() + "/login?error=" + result.message().replace(" ", "+"));
-            return;
-        }
+        Users user = userRepository.findByUsername(username);
 
-        response.sendRedirect(request.getContextPath() + "/dashboard");
-    }
+        LoginAudit audit = new LoginAudit();
+        audit.setUser(user);
+        audit.setSessionId(request.getSession().getId());
+        audit.setLoginAt(LocalDateTime.now());
+        audit.setLoginMode("OIDC_KEYCLOAK");
 
-    private String resolveLoginMode(String registrationId) {
-        if ("keycloak".equalsIgnoreCase(registrationId)) {
-            return LoginModes.KEYCLOAK;
-        }
-        return LoginModes.OIDC_OAUTH2;
+        loginAuditRepository.save(audit);
+
+        setDefaultTargetUrl("/dashboard");
+        super.onAuthenticationSuccess(request, response, authentication);
     }
 }

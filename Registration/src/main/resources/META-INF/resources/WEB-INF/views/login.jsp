@@ -36,35 +36,27 @@
                     </form>
 
                     <hr/>
-
+<div>
                     <!-- Google Login -->
                     <div class="text-center">
-                        <button type="button"
-                                id="googleSignIn"
-                                class="btn btn-#300 border-#800 border-3 mb-3">
-
+                        <a class="btn btn-outline-danger mt-4 mb-0"
+                            href="${pageContext.request.contextPath}/common/google-auth.js}">
                             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                                  style="width:18px; margin-right:8px;">
-
                             Log in with Firebase
-                        </button>
+                        </a>
+                    <a class="btn btn-outline-primary mt-4 mb-0"
+                           href="${pageContext.request.contextPath}/oauth2/authorization/univ">
+                               Login with OAuth2.0 (OIDC) </a>
+                    <a class="btn btn-outline-success mt-4 mb-0 "
+                           href="${pageContext.request.contextPath}/oauth2/authorization/keycloak">
+                           Login with Keycloak </a>
                     </div>
-
                     <p class="text-center text-secondary mt-4 mb-0">
                         New user?
                         <a href="${pageContext.request.contextPath}/register"
                            class="fw-semibold">Register</a>
                     </p>
-                     <a class="btn btn-outline-primary"
-                                               href="${pageContext.request.contextPath}/oauth2/authorization/univ">
-                                                Login with OAuth2.0 (OIDC)
-                                            </a>
-
-                                            <a class="btn btn-outline-success"
-                                               href="${pageContext.request.contextPath}/oauth2/authorization/keycloak">
-                                                Login with Keycloak
-                                            </a>
-
                 </div>
             </div>
         </div>
@@ -83,6 +75,5 @@
                 successRedirectPath: "/dashboard"
             });
     </script>
-
 </body>
 </html>

@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.emudhra.Registration.constants.SessionAttribute;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -71,7 +72,7 @@ public class ManualLoginService {
         failedAttempts.remove(username);
         blockedUntil.remove(username);
         loginAuditService.startSessionAudit(user, session, LoginModes.MANUAL);
-        session.setAttribute("user", user);
+        session.setAttribute(SessionAttribute.USER, user);
         return AuthResult.success("Login successful");
     }
 }

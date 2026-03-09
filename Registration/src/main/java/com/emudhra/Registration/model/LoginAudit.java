@@ -44,6 +44,10 @@ public class LoginAudit {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Users getUser() {
         return user;
     }
@@ -72,8 +76,16 @@ public class LoginAudit {
         return logoutAt;
     }
 
+    public void setLogoutAt(LocalDateTime logoutAt) {
+        this.logoutAt = logoutAt;
+    }
+
     public Long getSessionDurationSeconds() {
         return sessionDurationSeconds;
+    }
+
+    public void setSessionDurationSeconds(Long sessionDurationSeconds) {
+        this.sessionDurationSeconds = sessionDurationSeconds;
     }
 
     public String getLoginMode() {
