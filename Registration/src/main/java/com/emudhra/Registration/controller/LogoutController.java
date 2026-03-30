@@ -17,6 +17,6 @@ public class LogoutController {
     public String logout(HttpSession session) {
         loginAuditService.closeSessionAudit(session);
         session.invalidate();
-        return "redirect:/login";
+        return "redirect:/login?logot=true";
     }
 }

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class LoginAuditService {
@@ -28,6 +29,10 @@ public class LoginAuditService {
         loginAudit.setLoginMode(loginMode);
 //        loginAudit.setLoginMode(loginAudit.getLoginMode());
 
+        String persistedMode = (loginMode == null || loginMode.isBlank())
+                ? user.getRegistration_mode()
+                : loginMode;
+        loginAudit.setLoginMode(persistedMode);
         System.out.println("Login mode is: " + loginMode);
         LoginAudit savedAudit = loginAuditRepository.save(loginAudit);
         session.setAttribute(SessionAttribute.ACTIVE_LOGIN_AUDIT_ID, savedAudit.getId());
@@ -47,6 +52,14 @@ public class LoginAuditService {
                     .ifPresent(this::markLogoutIfRequired);
         }
     }
+
+    public List<LoginAudit> fetchAudits(Long userId, String loginMode) {
+        if (loginMode == null || loginMode.isBlank()) {
+            return loginAuditRepository.findByUserIdOrderByLoginAtDesc(userId);
+        }
+        return loginAuditRepository.findByUserIdAndLoginModeOrderByLoginAtDesc(userId, loginMode);
+    }
+
 
     private void markLogoutIfRequired(LoginAudit loginAudit) {
         if (loginAudit.getLogoutAt() == null) {

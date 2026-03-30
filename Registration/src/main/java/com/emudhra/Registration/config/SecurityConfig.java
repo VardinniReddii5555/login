@@ -1,5 +1,7 @@
 package com.emudhra.Registration.config;
 
+import com.emudhra.Registration.service.LoginAuditService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,7 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   LoginAuditService loginAuditService) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
@@ -32,10 +35,20 @@ public class SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
                         .defaultSuccessUrl("/oauth2/success", true)
-                        .failureUrl("/login?oauth2Error=true"));
+                        .failureUrl("/login?oauth2Error=true"))
+                .logout(logout -> logout
+                        .logoutUrl("/app-logout")
+                        .addLogoutHandler((request, response, authentication) -> {
+                            HttpSession session = request.getSession(false);
+                            if (session != null) {
+                                loginAuditService.closeSessionAudit(session);
+                            }
+                        })
+                        .logoutSuccessUrl("/login?logout=true"));
 
         return http.build();
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
