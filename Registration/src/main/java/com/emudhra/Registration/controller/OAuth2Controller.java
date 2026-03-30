@@ -5,6 +5,7 @@ import com.emudhra.Registration.service.LoginAuditService;
 import com.emudhra.Registration.model.Users;
 import com.emudhra.Registration.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,12 +28,19 @@ public class OAuth2Controller {
     }
 
     @GetMapping("/oauth2/success")
-    public String oauth2Success(@AuthenticationPrincipal OAuth2User oauth2User, HttpSession session) {
+    public String oauth2Success(@AuthenticationPrincipal OAuth2User oauth2User,  OAuth2AuthenticationToken authentication,HttpSession session) {
         if (oauth2User == null) {
             return "redirect:/login?oauth2Error=true";
         }
 
+        String registrationId = authentication != null
+                ? authentication.getAuthorizedClientRegistrationId()
+                : "google";
+
         String email = oauth2User.getAttribute("email");
+        if (email == null || email.isBlank()) {
+            email = oauth2User.getAttribute("login");
+        }
         if (email == null || !email.endsWith("@kanchiuniv.ac.in")) {
             return "redirect:/login?oauth2Error=true";
         }
@@ -62,16 +70,20 @@ public class OAuth2Controller {
                 suffix++;
             }
 
-            String sub = oauth2User.getAttribute("sub");
-            String generatedPassword = passwordEncoder.encode(sub != null ? sub : email);
+            String providerUserId = oauth2User.getAttribute("sub");
+            if (providerUserId == null || providerUserId.isBlank()) {
+                providerUserId = oauth2User.getAttribute("id");
+            }
+
+            String generatedPassword = passwordEncoder.encode(providerUserId != null ? providerUserId : email);
             Users user = new Users();
             user.setUsername(username);
             user.setEmail(email);
             user.setPassword(generatedPassword);
-            user.setRegistration_mode(LoginModes.GOOGLE_SSO);
+            user.setRegistration_mode(resolveRegistrationMode(registrationId));
             activeUser = userRepository.save(user);
         } else {
-            existingUser.setRegistration_mode(LoginModes.GOOGLE_SSO);
+            existingUser.setRegistration_mode(resolveRegistrationMode(registrationId));;
             activeUser = userRepository.save(existingUser);
         }
 
@@ -79,5 +91,11 @@ public class OAuth2Controller {
         session.setAttribute("user", activeUser);
 
         return "redirect:/dashboard";
+    }
+    private String resolveRegistrationMode(String registrationId) {
+        if ("github".equalsIgnoreCase(registrationId)) {
+            return LoginModes.GITHUB_SSO;
+        }
+        return LoginModes.GOOGLE_SSO;
     }
 }

@@ -79,22 +79,14 @@ public class AuthController {
                 user.setUsername(username);
                 user.setEmail(email);
                 user.setPassword(generatedPassword);
-                user.setRegistration_mode("FIREBASE_SSO");
                 user.setRegistration_mode(LoginModes.FIREBASE_SSO);
                 activeUser = userRepository.save(user);
-//             Users savedUser = userRepository.save(user);
-                session.setAttribute("user", activeUser);
             } else {
-                existingUser.setRegistration_mode("FIREBASE_SSO");
-                activeUser = userRepository.save(existingUser);
                 existingUser.setRegistration_mode(LoginModes.FIREBASE_SSO);
                 activeUser = userRepository.save(existingUser);
-//                Users savedUser = userRepository.save(existingUser);
-                session.setAttribute("user", activeUser);
             }
-            loginAuditService.startSessionAudit(activeUser, session,LoginModes.MANUAL);
             loginAuditService.startSessionAudit(activeUser, session,LoginModes.FIREBASE_SSO);
-//            session.setAttribute("user", authenticatedUser);
+            session.setAttribute("user", activeUser);
             response.put("status", "SUCCESS");
             response.put("message", "Login successful");
 

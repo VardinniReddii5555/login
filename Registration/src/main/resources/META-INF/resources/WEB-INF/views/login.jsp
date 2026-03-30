@@ -48,7 +48,7 @@
                     <h1 class="fw-semibold mb-4">Student Login</h1>
  <c:if test="${param.oauth2Error == 'true'}">
                         <div class="alert alert-danger" role="alert">
-                            Google OAuth2 login failed or unauthorized domain.
+                            OAuth2 login failed or unauthorized domain.
                         </div>
                     </c:if>
                     <!-- Normal Login -->
@@ -68,9 +68,14 @@
 
                     <!-- Google Login -->
                     <div class="text-center d-grid gap-2">
+
+                                      <a href="${pageContext.request.contextPath}/manual"
+                                                                class="btn btn-outline-primary mb-3">
+                                                                 Log in with Username and Password
+                                                             </a>
                         <button type="button"
                                 id="firebaseSignIn"
-                                class="btn btn-light border-secondary-subtle border-3 mb-3">
+                                class="btn btn-light border-secondary-subtle border-1 mb-3">
 
                             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                                  style="width:18px; margin-right:8px;">
@@ -82,6 +87,11 @@
                                                    class="btn btn-outline-primary mb-3">
                                                     Log in with Google (OAuth2)
                                                 </a>
+
+                          <a href="${pageContext.request.contextPath}/oauth2/authorization/github"
+                                                    class="btn btn-outline-dark mb-3">
+                                                     Log in with GitHub (OAuth2)
+                                                 </a>
 
                     </div>
 

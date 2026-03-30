@@ -83,4 +83,5 @@ public class LoginAudit {
     public void setLoginMode(String loginMode) {
         this.loginMode = loginMode;
     }
+
 }
