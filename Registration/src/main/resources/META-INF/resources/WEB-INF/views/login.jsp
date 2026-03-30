@@ -46,7 +46,11 @@
                 <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5">
 
                     <h1 class="fw-semibold mb-4">Student Login</h1>
-
+ <c:if test="${param.oauth2Error == 'true'}">
+                        <div class="alert alert-danger" role="alert">
+                            Google OAuth2 login failed or unauthorized domain.
+                        </div>
+                    </c:if>
                     <!-- Normal Login -->
                     <form action="${pageContext.request.contextPath}/login"
                           method="post"
@@ -63,16 +67,22 @@
                     <hr/>
 
                     <!-- Google Login -->
-                    <div class="text-center">
+                    <div class="text-center d-grid gap-2">
                         <button type="button"
-                                id="googleSignIn"
-                                class="btn btn-#300 border-#800 border-3 mb-3">
+                                id="firebaseSignIn"
+                                class="btn btn-light border-secondary-subtle border-3 mb-3">
 
                             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
                                  style="width:18px; margin-right:8px;">
 
-                            Log in with Google
+                            Log in with Google(Firebase)
                         </button>
+
+                         <a href="${pageContext.request.contextPath}/oauth2/authorization/google"
+                                                   class="btn btn-outline-primary mb-3">
+                                                    Log in with Google (OAuth2)
+                                                </a>
+
                     </div>
 
                     <p class="text-center text-secondary mt-4 mb-0">
@@ -112,7 +122,7 @@
     const auth = getAuth(app);
     const provider = new GoogleAuthProvider();
 
-    document.getElementById("googleSignIn")
+    document.getElementById("firebaseSignIn")
         .addEventListener("click", async () => {
 
             try {
