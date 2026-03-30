@@ -7,6 +7,7 @@ import com.emudhra.Registration.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -116,6 +117,9 @@ public class OAuth2Controller {
                         .uri("https://api.github.com/user/emails")
                         .header(HttpHeaders.AUTHORIZATION,
                                 "Bearer " + authorizedClient.getAccessToken().getTokenValue())
+                        .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+                        .header(HttpHeaders.USER_AGENT, "Registration-App")
+                        .header("X-GitHub-Api-Version", "2022-11-28")
                         .retrieve()
                         .body(new ParameterizedTypeReference<>() {
                         });

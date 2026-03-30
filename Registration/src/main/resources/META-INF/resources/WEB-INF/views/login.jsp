@@ -69,10 +69,6 @@
                     <!-- Google Login -->
                     <div class="text-center d-grid gap-2">
 
-                                      <a href="${pageContext.request.contextPath}/manual"
-                                                                class="btn btn-outline-primary mb-3">
-                                                                 Log in with Username and Password
-                                                             </a>
                         <button type="button"
                                 id="firebaseSignIn"
                                 class="btn btn-light border-secondary-subtle border-1 mb-3">
