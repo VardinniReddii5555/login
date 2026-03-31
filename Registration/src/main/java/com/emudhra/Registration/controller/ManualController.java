@@ -1,5 +1,6 @@
 package com.emudhra.Registration.controller;
 
+import com.emudhra.Registration.constants.LoginModes;
 import com.emudhra.Registration.model.Users;
 import com.emudhra.Registration.repository.UserRepository;
 
@@ -60,10 +61,8 @@ public class ManualController {
             users.setUsername(username);
             users.setEmail(email);
             users.setPassword(encryptedPassword);
-            users.setRegistration_mode("MANUAL");
+            users.setRegistration_mode(LoginModes.MANUAL);
             userRepository.save(users);
-            userRepository.save(users);
-
             return "redirect:/login";
 
         } catch (Exception e) {
