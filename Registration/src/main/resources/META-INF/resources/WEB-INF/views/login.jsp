@@ -40,12 +40,12 @@
         </div>
     </c:if>
 
-    <div class="container py-5">
+    <div class="container py-1">
         <div class="row justify-content-center">
             <div class="col-md-7 col-lg-5">
                 <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5">
 
-                    <h1 class="fw-semibold mb-4">Student Login</h1>
+                    <h1 class="fw-semibold mt-2 mb-3">Student Login</h1>
  <c:if test="${param.oauth2Error == 'true'}">
                         <div class="alert alert-danger" role="alert">
                             OAuth2 login failed or unauthorized domain.
@@ -81,14 +81,28 @@
 
                          <a href="${pageContext.request.contextPath}/oauth2/authorization/google"
                                                    class="btn btn-outline-primary mb-3">
+                                                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                                                                                    style="width:18px; margin-right:8px;">
                                                     Log in with Google (OAuth2)
                                                 </a>
+                        <a href="${pageContext.request.contextPath}/oauth2/authorization/emudhra"
+                           class="btn btn-outline-purple mb-3 d-flex align-items-center justify-content-center">
 
-                          <a href="${pageContext.request.contextPath}/oauth2/authorization/github"
-                                                    class="btn btn-outline-dark mb-3">
-                                                     Log in with GitHub (OAuth2)
-                                                 </a>
+                            <img src="https://tse4.mm.bing.net/th/id/OIP.tC5P0odIiwS-LEYoilTq8gHaHX?rs=1&pid=ImgDetMain"
+                                 alt="Emudhra"
+                                 style="width:20px; height:20px; margin-right:8px; object-fit:contain;">
 
+                            Log in with Emudhra (OAuth2)
+                        </a>
+                        <a href="${pageContext.request.contextPath}/oauth2/authorization/github"
+                           class="btn btn-outline-dark mb-3 d-flex align-items-center justify-content-center">
+
+                            <img src="https://cdn-icons-png.flaticon.com/512/733/733553.png"
+                                 alt="GitHub"
+                                 style="width:20px; height:20px; margin-right:8px;">
+
+                            Log in with GitHub (OAuth2)
+                        </a>
                     </div>
 
                     <p class="text-center text-secondary mt-4 mb-0">

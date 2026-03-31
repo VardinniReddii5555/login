@@ -34,12 +34,12 @@ public class OAuth2Controller {
                             PasswordEncoder passwordEncoder,
                             LoginAuditService loginAuditService,
                             OAuth2AuthorizedClientService authorizedClientService) {
-            this.userRepository = userRepository;
-            this.passwordEncoder = passwordEncoder;
-            this.loginAuditService = loginAuditService;
-            this.authorizedClientService = authorizedClientService;
-            this.restClient = RestClient.builder().build();
-}
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.loginAuditService = loginAuditService;
+        this.authorizedClientService = authorizedClientService;
+        this.restClient = RestClient.builder().build();
+    }
     @GetMapping("/oauth2/success")
     public String oauth2Success(@AuthenticationPrincipal OAuth2User oauth2User,
                                 OAuth2AuthenticationToken authentication,
@@ -56,7 +56,11 @@ public class OAuth2Controller {
             return "redirect:/login?oauth2Error=true";
         }
 
-        String name = oauth2User.getAttribute("name");
+        String name = firstNonBlank(
+                oauth2User.getAttribute("name"),
+                oauth2User.getAttribute("preferred_username"),
+                oauth2User.getAttribute("given_name"),
+                oauth2User.getAttribute("nickname"));
         String preferredUsername = (name != null && !name.isBlank())
                 ? name.replaceAll("\\s+", "")
                 : email.split("@")[0];
@@ -107,6 +111,13 @@ public class OAuth2Controller {
             return email;
         }
 
+        if ("emudhra".equalsIgnoreCase(registrationId)) {
+            return firstNonBlank(
+                    oauth2User.getAttribute("upn"),
+                    oauth2User.getAttribute("preferred_username"),
+                    oauth2User.getAttribute("unique_name"));
+        }
+
         if ("github".equalsIgnoreCase(registrationId)) {
             OAuth2AuthorizedClient authorizedClient = authorizedClientService.loadAuthorizedClient(
                     authentication.getAuthorizedClientRegistrationId(),
@@ -141,19 +152,30 @@ public class OAuth2Controller {
     }
 
     private String extractProviderUserId(OAuth2User oauth2User) {
-        String providerUserId = oauth2User.getAttribute("sub");
-        if (providerUserId == null || providerUserId.isBlank()) {
-            providerUserId = oauth2User.getAttribute("id");
+            return firstNonBlank(
+                    oauth2User.getAttribute("sub"),
+                    oauth2User.getAttribute("id"),
+                    oauth2User.getAttribute("uid"));
         }
-        return providerUserId;
+
+        private String firstNonBlank(String... values) {
+            if (values == null) {
+                return null;
+            }
+            for (String value : values) {
+                if (value != null && !value.isBlank()) {
+                    return value;
+                }
+            }
+            return null;
+        }
+        private String resolveRegistrationMode(String registrationId) {
+            if ("github".equalsIgnoreCase(registrationId)) {
+                return LoginModes.GITHUB_SSO;
+            }
+            if ("emudhra".equalsIgnoreCase(registrationId)) {
+                return LoginModes.EMUDHRA_SSO;
+            }
+            return LoginModes.GOOGLE_SSO;
+        }
     }
-    private String resolveRegistrationMode(String registrationId) {
-        if ("github".equalsIgnoreCase(registrationId)) {
-            return LoginModes.GITHUB_SSO;
-        }
-        if ("emudhra".equalsIgnoreCase(registrationId)) {
-            return LoginModes.EMUDHRA_SSO;
-        }
-        return LoginModes.GOOGLE_SSO;
-    }
-}

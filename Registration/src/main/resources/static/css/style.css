@@ -4,3 +4,15 @@
     border-left: 4px solid #ff0000;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
+.btn-outline-purple {
+    color: #6f42c1;
+    border: 1px solid #6f42c1;
+    background-color: transparent;
+    transition: 0.3s ease;
+}
+
+.btn-outline-purple:hover {
+    color: #fff;
+    background-color: #6f42c1;
+    border-color: #6f42c1;
+}
