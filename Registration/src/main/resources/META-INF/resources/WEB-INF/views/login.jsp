@@ -24,6 +24,12 @@
                             </div>
                          </c:if>
 
+                         <c:if test="${param.emudhraStrictError == 'true'}">
+                            <div class="alert alert-danger" role="alert">
+                                Strict Emudhra SSO validation failed: missing/invalid ID token or access token.
+                            </div>
+                         </c:if>
+
                     <!-- Normal Login -->
                     <form action="${pageContext.request.contextPath}/login" method="post" class="d-grid gap-3">
                         <input type="text" name="username" class="form-control" placeholder="Username" required>

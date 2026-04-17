@@ -45,8 +45,8 @@ public class ManualController {
                 return "register";
             }
 
-            if (!email.endsWith("@kanchiuniv.ac.in")) {
-                model.addAttribute("error", "Email must end with @kanchiuniv.ac.in");
+            if (!email.endsWith("@online.emudhra.com")) {
+                model.addAttribute("error", "Email must end with @online.emudhra.com");
                 return "register";
             }
 

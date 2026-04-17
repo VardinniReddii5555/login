@@ -21,7 +21,7 @@ public class OAuth2LoginSupport {
                                 HttpSession session,
                                 String email,
                                 String loginMode) {
-        if (email == null || email.isBlank() || !email.endsWith("@kanchiuniv.ac.in")) {
+        if (email == null || email.isBlank() || !email.endsWith("@online.emudhra.com")) {
             return "redirect:/login?oauth2Error=true";
         }
 

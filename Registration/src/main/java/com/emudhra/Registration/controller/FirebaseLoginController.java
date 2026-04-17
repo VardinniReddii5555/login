@@ -32,7 +32,7 @@ public class FirebaseLoginController {
         try {
             FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(body.get("token"));
             String email = decodedToken.getEmail();
-            if (email == null || !email.endsWith("@kanchiuniv.ac.in")) {
+            if (email == null || !email.endsWith("@online.emudhra.com")) {
                 response.put("status", "FAIL");
                 response.put("message", "Unauthorized domain");
                 return response;

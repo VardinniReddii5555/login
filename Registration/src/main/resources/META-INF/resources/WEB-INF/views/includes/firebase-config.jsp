@@ -19,8 +19,8 @@
         try {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
-            if (!user.email.endsWith("@kanchiuniv.ac.in")) {
-                alert("Only kanchiuniv.ac.in email allowed");
+            if (!user.email.endsWith("@online.emudhra.com")) {
+                alert("Only @online.emudhra.com email allowed");
                 return;
             }
 
