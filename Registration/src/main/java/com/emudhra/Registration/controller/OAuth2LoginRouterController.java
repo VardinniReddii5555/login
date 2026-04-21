@@ -27,15 +27,14 @@ public class OAuth2LoginRouterController {
                                 OAuth2AuthenticationToken authentication,
                                 HttpSession session) {
         if (oauth2User == null || authentication == null) {
-            return "redirect:/dashboard";
-//                    "login?oauth2Error=true";
+            return "redirect:/login?oauth2Error=true&reason=missing_principal";
         }
 
         return switch (authentication.getAuthorizedClientRegistrationId().toLowerCase()) {
             case "google" -> googleLoginController.handle(oauth2User, session);
             case "github" -> githubLoginController.handle(oauth2User, authentication, session);
             case "emudhra" -> emudhraLoginController.handle(oauth2User, authentication, session);
-            default -> "redirect:/login?oauth2Error=true";
+            default -> "redirect:/login?oauth2Error=true&reason=unsupported_registration";
         };
     }
 }

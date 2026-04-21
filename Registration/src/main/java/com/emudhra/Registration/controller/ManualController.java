@@ -63,7 +63,7 @@ public class ManualController {
             users.setPassword(encryptedPassword);
             users.setRegistration_mode(LoginModes.MANUAL);
             userRepository.save(users);
-            return "redirect:/login";
+            return "login";
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -30,6 +30,11 @@
                             </div>
                          </c:if>
 
+                         <c:if test="${not empty param.reason}">
+                                                             <br/>
+                                                             <small>Reason: <c:out value="${param.reason}"/></small>
+                                                         </c:if>
+
                     <!-- Normal Login -->
                     <form action="${pageContext.request.contextPath}/login" method="post" class="d-grid gap-3">
                         <input type="text" name="username" class="form-control" placeholder="Username" required>
@@ -48,7 +53,7 @@
                                                  </button>
 
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="btn btn-outline-primary mb-3">Log in with Google (OAuth2)</a>
-                        <a href="${pageContext.request.contextPath}/oauth2/authorization/emudhra" class="btn btn-outline-purple mb-3">Log in with Emudhra (OAuth2)</a>
+                        <a href="http://10.80.244.152:9090/oauth2/authorization/emudhra" class="btn btn-outline-purple mb-3">Log in with Emudhra (OAuth2)</a>
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/github" class="btn btn-outline-dark mb-3">Log in with GitHub (OAuth2)</a>
                     </div>
 

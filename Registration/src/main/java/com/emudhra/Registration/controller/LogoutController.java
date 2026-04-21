@@ -3,6 +3,7 @@ package com.emudhra.Registration.controller;
 import com.emudhra.Registration.service.LoginAuditService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -17,6 +18,10 @@ public class LogoutController {
     public String logout(HttpSession session) {
         loginAuditService.closeSessionAudit(session);
         session.invalidate();
-        return "redirect:/login?logot=true";
+        return "redirect:/login?logout=true";
+    }
+    @GetMapping("/logout")
+    public String logoutGet() {
+        return "redirect:/login";
     }
 }

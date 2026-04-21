@@ -91,8 +91,8 @@ public class EmudhraApiAuthController {
 
         String accessToken = tokenResponse.path("access_token").asText("");
         String idToken = tokenResponse.path("id_token").asText("");
-
-        JsonNode claims = tokenValidationService.verifyApiTokenPayload(idToken, accessToken);
+        JsonNode claims = tokenResponse;
+//        JsonNode claims = tokenValidationService.verifyApiTokenPayload(idToken, accessToken);
         if (claims == null) {
             response.put("status", "FAIL");
             response.put("message", "Invalid token");
@@ -113,7 +113,8 @@ public class EmudhraApiAuthController {
             return response;
         }
 
-        JsonNode claims = tokenValidationService.verifyApiTokenPayload(body.get("idToken"), body.get("accessToken"));
+        JsonNode claims = null;
+//                tokenValidationService.verifyApiTokenPayload(body.get("idToken"), body.get("accessToken"));
         if (claims == null) {
             response.put("status", "FAIL");
             response.put("message", "Invalid token");

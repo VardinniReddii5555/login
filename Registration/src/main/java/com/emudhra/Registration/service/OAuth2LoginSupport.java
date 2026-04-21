@@ -40,7 +40,7 @@ public class OAuth2LoginSupport {
 
         loginAuditService.startSessionAudit(user, session, loginMode);
         session.setAttribute("user", user);
-        return "redirect:/dashboard";
+        return "dashboard";
     }
 
     public String firstNonBlank(Object... values) {

@@ -23,15 +23,13 @@ public class EmudhraLoginController {
             public String handle(OAuth2User oauth2User,
                     OAuth2AuthenticationToken authentication,
                     HttpSession session) {
-//                if (!tokenValidationService.isValid(authentication, oauth2User)) {
-//                    return "redirect:/login?emudhraStrictError=true";
-//                }
-                boolean valid = tokenValidationService.isValid(authentication, oauth2User);
-
-                System.out.println("Token validation result: " + valid);
-
-// Don't block login for now
-                System.out.println("emudhralogincontroller");
+                      if (oauth2User == null || authentication == null) {
+                                return "redirect:/login?oauth2Error=true&reason=missing_authentication";
+                            }
+                            if (!tokenValidationService.isValid(authentication)) {
+                                System.out.println("User: " + authentication.getName());
+                                return "redirect:/login?emudhraStrictError=true";
+                            }
                 String email = support.firstNonBlank(
                         oauth2User.getAttribute("email"),
                         oauth2User.getAttribute("upn"),
