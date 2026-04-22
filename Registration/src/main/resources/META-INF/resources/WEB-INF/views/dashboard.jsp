@@ -31,16 +31,16 @@
                 <h2 class="fw-bold mb-4">User Details</h2>
                 <dl class="row mb-0">
                     <dt class="col-sm-4">ID</dt>
-                    <dd class="col-sm-8">${sessionScope.user.id}</dd>
+                    <dd class="col-sm-8">${id}</dd>
 
                     <dt class="col-sm-4">Username</dt>
-                    <dd class="col-sm-8">${sessionScope.user.username}</dd>
+                    <dd class="col-sm-8">${username}</dd>
 
                     <dt class="col-sm-4">Email</dt>
-                    <dd class="col-sm-8">${sessionScope.user.email}</dd>
+                    <dd class="col-sm-8">${email}</dd>
 
                     <dt class="col-sm-4">Mode</dt>
-                    <dd class="col-sm-8">${sessionScope.user.registration_mode}</dd>
+                    <dd class="col-sm-8">${registration_mode}</dd>
                 </dl>
             </div>
         </div>

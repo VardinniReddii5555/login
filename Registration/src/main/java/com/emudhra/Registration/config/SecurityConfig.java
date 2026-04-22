@@ -1,5 +1,6 @@
 package com.emudhra.Registration.config;
 
+import com.emudhra.Registration.service.CustomOAuth2UserService;
 import com.emudhra.Registration.service.LoginAuditService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +26,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   LoginAuditService loginAuditService) throws Exception {
+                                                   LoginAuditService loginAuditService,
+                                                   CustomOAuth2UserService customOAuth2UserService) throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
@@ -52,12 +55,12 @@ public class SecurityConfig {
 
                         // 🔥 IMPORTANT FIX (OAuth2 fallback instead of OIDC validation)
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(oAuth2UserService())
+                                .userService(customOAuth2UserService)
                         )
                 )
 
                 .logout(logout -> logout
-                        .logoutUrl("/app-logout")
+                        .logoutUrl("/logout")
                         .addLogoutHandler((request, response, authentication) -> {
                             HttpSession session = request.getSession(false);
                             if (session != null) {
@@ -65,6 +68,8 @@ public class SecurityConfig {
                             }
                         })
                         .logoutSuccessUrl("/login?logout=true")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
                 );
 
         return http.build();

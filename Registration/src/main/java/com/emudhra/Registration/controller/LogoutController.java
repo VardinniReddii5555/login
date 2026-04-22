@@ -15,6 +15,7 @@ public class LogoutController {
 
     @PostMapping("/logout")
     public String logout(HttpSession session) {
+        String sessionId = session.getId();
         loginAuditService.closeSessionAudit(session);
         session.invalidate();
         return "redirect:/login?logot=true";
