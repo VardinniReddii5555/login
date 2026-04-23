@@ -7,6 +7,7 @@ import com.emudhra.Registration.repository.LoginAuditRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,7 +28,6 @@ public class LoginAuditService {
         loginAudit.setSessionId(session.getId());
         loginAudit.setLoginAt(LocalDateTime.now());
         loginAudit.setLoginMode(loginMode);
-//        loginAudit.setLoginMode(loginAudit.getLoginMode());
 
         String persistedMode = (loginMode == null || loginMode.isBlank())
                 ? user.getRegistration_mode()
@@ -42,13 +42,16 @@ public class LoginAuditService {
         Object loginAuditId = session.getAttribute(SessionAttribute.ACTIVE_LOGIN_AUDIT_ID);
 
         if (loginAuditId instanceof Long auditId) {
-            loginAuditRepository.findById(auditId).ifPresent(this::markLogoutIfRequired);
+            loginAuditRepository
+                    .findById(auditId)
+                    .ifPresent(this::markLogoutIfRequired);
             return;
         }
 
         Object userObj = session.getAttribute(SessionAttribute.USER);
         if (userObj instanceof Users user) {
-            loginAuditRepository.findTopByUserIdAndLogoutAtIsNullOrderByLoginAtDesc(user.getId())
+            loginAuditRepository
+                    .findTopByUserIdAndLogoutAtIsNullOrderByLoginAtDesc(user.getId())
                     .ifPresent(this::markLogoutIfRequired);
         }
     }
@@ -62,9 +65,24 @@ public class LoginAuditService {
 
 
     private void markLogoutIfRequired(LoginAudit loginAudit) {
-        if (loginAudit.getLogoutAt() == null) {
-            loginAudit.markLogout(LocalDateTime.now());
-            loginAuditRepository.save(loginAudit);
+        if (loginAudit.getLogoutAt() != null) {
+            return;
         }
+
+        LocalDateTime logoutTime = LocalDateTime.now();
+
+        loginAudit.setLogoutAt(logoutTime);
+
+        long seconds = Duration.between(
+                loginAudit.getLoginAt(),
+                logoutTime
+        ).getSeconds();
+
+        loginAudit.setSessionDurationSeconds(seconds);
+
+        loginAuditRepository.save(loginAudit);
+
+        System.out.println("✅ Logout updated for auditId: " + loginAudit.getId());
+
     }
 }

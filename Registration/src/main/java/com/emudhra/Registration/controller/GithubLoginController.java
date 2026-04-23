@@ -58,6 +58,6 @@ public class GithubLoginController {
                 .filter(item -> Boolean.TRUE.equals(item.get("primary")))
                 .map(item -> (String) item.get("email"))
                 .findFirst()
-                .orElse((String) emails.get(0).get("email"));
+                .orElse((String) emails.getFirst().get("email"));
     }
 }

@@ -72,6 +72,18 @@ public class LoginAudit {
         return logoutAt;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setLogoutAt(LocalDateTime logoutAt) {
+        this.logoutAt = logoutAt;
+    }
+
+    public void setSessionDurationSeconds(Long sessionDurationSeconds) {
+        this.sessionDurationSeconds = sessionDurationSeconds;
+    }
+
     public Long getSessionDurationSeconds() {
         return sessionDurationSeconds;
     }

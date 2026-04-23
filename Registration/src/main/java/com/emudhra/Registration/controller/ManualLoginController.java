@@ -71,7 +71,17 @@ public class ManualLoginController {
         blockedUntil.remove(username);
         loginAuditService.startSessionAudit(user, session, LoginModes.MANUAL);
         session.setAttribute("user", user);
-        return "redirect:/dashboard";
+
+        // 🔥 LOGIN AUDIT
+        loginAuditService.startSessionAudit(user, session, LoginModes.MANUAL);
+
+        // ✅ SEND TO DASHBOARD
+        model.addAttribute("id", user.getId());
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("registration_mode", user.getRegistration_mode());
+
+        return "dashboard";
     }
     private boolean isBlocked(String username, Model model) {
         Instant now = Instant.now();

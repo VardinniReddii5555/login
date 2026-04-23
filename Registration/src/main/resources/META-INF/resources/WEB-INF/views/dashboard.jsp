@@ -12,7 +12,7 @@
 <body class="auth-bg">
 <nav class="navbar bg-white shadow-sm">
     <div class="container">
-        <span class="navbar-brand fw-semibold">HEYLLO!!! ${sessionScope.user.username}</span>
+        <span class="navbar-brand fw-semibold">HEYLLO!!! ${username}</span>
         <form action="/logout" method="post" style="display:inline;">
 
             <button type="submit"

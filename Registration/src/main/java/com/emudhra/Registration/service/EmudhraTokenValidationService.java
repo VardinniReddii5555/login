@@ -46,7 +46,6 @@ public class EmudhraTokenValidationService {
                 authentication.getAuthorizedClientRegistrationId(),
                 authentication.getName());
 
-        // ✅ Only validate access token (enough for your case)
         return isAccessTokenValid(authorizedClient);
     }
 

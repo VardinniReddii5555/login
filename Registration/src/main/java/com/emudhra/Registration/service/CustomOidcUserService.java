@@ -10,7 +10,7 @@ public class CustomOidcUserService extends OidcUserService {
 
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) {
-        // Skip issuer validation by just loading user
+
         return super.loadUser(userRequest);
     }
 }

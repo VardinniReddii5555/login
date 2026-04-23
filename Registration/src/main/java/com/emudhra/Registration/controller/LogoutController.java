@@ -1,5 +1,6 @@
 package com.emudhra.Registration.controller;
 
+import com.emudhra.Registration.constants.SessionAttribute;
 import com.emudhra.Registration.service.LoginAuditService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,10 @@ public class LogoutController {
 
     @PostMapping("/logout")
     public String logout(HttpSession session) {
-        String sessionId = session.getId();
         loginAuditService.closeSessionAudit(session);
         session.invalidate();
+        System.out.println("Session ID: " + session.getId());
+        System.out.println("Audit ID: " + session.getAttribute(SessionAttribute.ACTIVE_LOGIN_AUDIT_ID));
         return "redirect:/login?logot=true";
     }
 }

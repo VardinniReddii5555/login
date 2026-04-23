@@ -11,7 +11,8 @@ public class GoogleLoginController {
 
     private final OAuth2LoginSupport support;
 
-    public GoogleLoginController(OAuth2LoginSupport support) {
+    public GoogleLoginController(OAuth2LoginSupport support)
+    {
         this.support = support;
     }
 
