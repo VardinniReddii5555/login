@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-
 @Controller
 public class ManualController {
 
@@ -19,7 +18,8 @@ public class ManualController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public ManualController(UserRepository userRepository) {
+    public ManualController(UserRepository userRepository)
+    {
         this.userRepository = userRepository;
     }
 
@@ -63,7 +63,7 @@ public class ManualController {
             users.setPassword(encryptedPassword);
             users.setRegistration_mode(LoginModes.MANUAL);
             userRepository.save(users);
-            return "redirect:/login";
+            return "redirect:/dashboard";
 
         } catch (Exception e) {
             e.printStackTrace();

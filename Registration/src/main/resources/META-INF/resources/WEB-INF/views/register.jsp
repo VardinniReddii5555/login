@@ -23,7 +23,7 @@
                         <label class="form-label">Username</label>
                                         <input type="text" id="username" name="username" class="form-control" required>
                         <label class="form-label">Email</label>
-                                        <input type="email" id="email" name="email" class="form-control" pattern="^[A-Za-z0-9._%+-]+@kanchiuniv\.ac\.in$" required>
+                                        <input type="email" id="email" name="email" class="form-control" pattern="^[A-Za-z0-9._%+-]+@^[A-Za-z0-9._%+-]$" required>
                         <label class="form-label">Password</label>
                                         <input type="password" id="password" name="password" class="form-control" minlength="6" maxlength="8" required>
                         <button type="submit" class="btn btn-primary btn-md col-12 mt-3 d-block mx-auto">Register Manually</button>

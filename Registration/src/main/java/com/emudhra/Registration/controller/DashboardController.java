@@ -25,12 +25,20 @@ public class DashboardController {
     }
 
     @GetMapping("/dashboard")
-    public String showDashboardPage(@AuthenticationPrincipal OAuth2User principal, @RequestParam(required = false) String loginMode,
+    public String showDashboardPage(@AuthenticationPrincipal OAuth2User principal,
+                                    @RequestParam(required = false) String loginMode,
                                     HttpSession session,
                                     Model model) {
         Object userObj = session.getAttribute(SessionAttribute.USER);
         if (!(userObj instanceof Users user)) {
             return "redirect:/login";
+        }
+        if(user != null) {
+
+            model.addAttribute("id", user.getId());
+            model.addAttribute("username", user.getUsername());
+            model.addAttribute("email", user.getEmail());
+            model.addAttribute("registration_mode", user.getRegistration_mode());
         }
 
         String email = support.firstNonBlank(
@@ -44,13 +52,15 @@ public class DashboardController {
         );
         System.out.println("USER INFO → " + principal.getAttributes());
 
+
+
         model.addAttribute("selectedLoginMode", loginMode);
         model.addAttribute("loginModes", new String[]{
                 LoginModes.MANUAL,
                 LoginModes.FIREBASE_SSO,
                 LoginModes.GOOGLE_SSO,
                 LoginModes.GITHUB_SSO,
-                LoginModes.EMUDHRA_SSO
+                LoginModes.OIDC_SSO
         });
         model.addAttribute("loginAudits", loginAuditService.fetchAudits(user.getId(), loginMode));
         return "dashboard";

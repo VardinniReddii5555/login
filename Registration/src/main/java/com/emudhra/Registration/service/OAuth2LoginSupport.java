@@ -49,7 +49,7 @@ public class OAuth2LoginSupport {
         }
 
         String normalizedEmail = email.toLowerCase();
-        if (LoginModes.EMUDHRA_SSO.equals(loginMode)) {
+        if (LoginModes.OIDC_SSO.equals(loginMode)) {
             return normalizedEmail.endsWith("@online.emudhra.com")
                     || normalizedEmail.endsWith("@emudhra.com");
         }

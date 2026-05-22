@@ -98,7 +98,6 @@ public class EmudhraApiAuthController {
             response.put("message", "Invalid token");
             return response;
         }
-
         return completeLogin(session, response, claims, accessToken, idToken, tokenResponse.path("refresh_token").asText(""), authorizationCode);
     }
 
@@ -140,8 +139,8 @@ public class EmudhraApiAuthController {
         String providerUserId = claims.path("sub").asText(email);
         String displayName = claims.path("name").asText(email);
 
-        Users activeUser = socialLoginService.findOrCreateUser(email, displayName, providerUserId, LoginModes.EMUDHRA_SSO);
-        loginAuditService.startSessionAudit(activeUser, session, LoginModes.EMUDHRA_SSO);
+        Users activeUser = socialLoginService.findOrCreateUser(email, displayName, providerUserId, LoginModes.OIDC_SSO);
+        loginAuditService.startSessionAudit(activeUser, session, LoginModes.OIDC_SSO);
         session.setAttribute(SessionAttribute.USER, activeUser);
 
         session.setAttribute("accessToken", accessToken);

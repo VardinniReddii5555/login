@@ -48,8 +48,10 @@
                                                  </button>
 
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="btn btn-outline-primary mb-3">Log in with Google (OAuth2)</a>
-                        <a href="${pageContext.request.contextPath}/oauth2/authorization/emudhra" class="btn btn-outline-purple mb-3">Log in with Emudhra (OAuth2)</a>
+                        <a href="${pageContext.request.contextPath}/oauth2/authorization/emudhra" class="btn btn-outline-warning mb-3">Log in with Emudhra [OIDC] (OAuth2)</a>
+                        <a href="${pageContext.request.contextPath}/saml2/authenticate/emudhra" class="btn btn-outline-purple mb-3">Log in with Emudhra [SAMl] (OAuth2)</a>
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/github" class="btn btn-outline-dark mb-3">Log in with GitHub (OAuth2)</a>
+
                     </div>
 
                     <p class="text-center text-secondary mt-4 mb-0">

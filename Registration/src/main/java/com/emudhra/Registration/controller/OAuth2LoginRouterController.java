@@ -6,9 +6,12 @@ import com.emudhra.Registration.model.LoginAudit;
 import com.emudhra.Registration.model.Users;
 import com.emudhra.Registration.repository.LoginAuditRepository;
 import com.emudhra.Registration.service.UserService;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +33,9 @@ public class OAuth2LoginRouterController {
     private GithubLoginController githubLoginController;
     @Autowired
     private EmudhraLoginController emudhraLoginController;
+    @Autowired
+    private OAuth2AuthorizedClientService clientService;
+
 
     public OAuth2LoginRouterController(GoogleLoginController googleLoginController,
                                        GithubLoginController githubLoginController,
@@ -48,6 +54,7 @@ public class OAuth2LoginRouterController {
         if (principal == null) {
             return "redirect:/login";
         }
+
         try {
 
             Map<String, Object> attributes = principal.getAttributes();
@@ -77,13 +84,15 @@ public class OAuth2LoginRouterController {
             }
             String registrationId;
             registrationId = authentication.getAuthorizedClientRegistrationId();
-
+            System.out.println("OAuth2 Success Method Called");
+            System.out.println("Authentication: " + authentication);
+            System.out.println("Principal: " + principal);
             String loginMode;
 
             switch (registrationId.toLowerCase()) {
 
                 case "emudhra":
-                    loginMode = LoginModes.EMUDHRA_SSO;
+                    loginMode = LoginModes.OIDC_SSO;
                     break;
 
                 case "google":
@@ -98,6 +107,10 @@ public class OAuth2LoginRouterController {
                     loginMode = LoginModes.FIREBASE_SSO;
                     break;
 
+                case "saml":
+                    loginMode = LoginModes.SAML_SSO;
+                    break;
+
                 default:
                     loginMode = LoginModes.MANUAL;
             }
@@ -107,7 +120,7 @@ public class OAuth2LoginRouterController {
             if (user == null) {
                 user = new Users();
                 user.setEmail(email);
-                user.setPassword("OAUTH_USER");
+                user.setPassword("OIDC_USER");
                 user.setUsername(name);
                 user.setRegistration_mode(loginMode);
 
@@ -129,7 +142,7 @@ public class OAuth2LoginRouterController {
             model.addAttribute("email", user.getEmail());
             model.addAttribute("registration_mode", user.getRegistration_mode());
             // 🎯 Success page
-            return "dashboard";
+            return "redirect:/dashboard";
 
         } catch (Exception e) {
             e.printStackTrace();
