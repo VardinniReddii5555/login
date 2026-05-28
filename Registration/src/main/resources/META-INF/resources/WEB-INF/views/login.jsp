@@ -13,11 +13,11 @@
 <body>
 <div class="auth-bg">
     <jsp:include page="/WEB-INF/views/includes/error.jsp"/>
-    <div class="container py-1">
+    <div class="container mt-2">
         <div class="row justify-content-center">
-            <div class="col-md-7 col-lg-5">
+            <div class="col-md-7 col-lg-6">
                 <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5">
-                    <h1 class="fw-semibold mt-2 mb-3">Student Login</h1>
+                    <h3 class="text-center mb-3">Employee Login</h3>
                          <c:if test="${param.oauth2Error == 'true'}">
                             <div class="alert alert-danger" role="alert">
                                 OAuth2 login failed or unauthorized domain.
@@ -40,7 +40,7 @@
                     <hr/>
 
                     <!-- Auth Login -->
-                    <div class="text-center d-grid gap-2">
+                    <div class="text-center d-grid gap-1">
 
                         <button type="button" id="firebaseSignIn" class="btn btn-light border-secondary-subtle border-1 mb-3">
                                                      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" style="width:18px; margin-right:8px;">
@@ -48,13 +48,21 @@
                                                  </button>
 
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="btn btn-outline-primary mb-3">Log in with Google (OAuth2)</a>
+
+
+                        <a href="${pageContext.request.contextPath}/oauth2/authorization/employee-portal" class="btn btn-outline-dark mb-3">Log in with Keyclock [OIDC]</a>
+                        <a href="${pageContext.request.contextPath}/saml2/authenticate/employee-portal-2" class="btn btn-outline-dark mb-3">Log in with Keyclock [SAML]</a>
+
+                        <a href="${pageContext.request.contextPath}/oauth2/authorization/github" class="btn btn-outline-dark mb-3">Log in with GitHub (OAuth2)</a>
+
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/emudhra" class="btn btn-outline-warning mb-3">Log in with Emudhra [OIDC] (OAuth2)</a>
                         <a href="${pageContext.request.contextPath}/saml2/authenticate/emudhra" class="btn btn-outline-purple mb-3">Log in with Emudhra [SAMl] (OAuth2)</a>
-                        <a href="${pageContext.request.contextPath}/oauth2/authorization/github" class="btn btn-outline-dark mb-3">Log in with GitHub (OAuth2)</a>
+
+
 
                     </div>
 
-                    <p class="text-center text-secondary mt-4 mb-0">
+                    <p class="text-center text-secondary mt-2 mb-0">
                         New user?
                         <a href="${pageContext.request.contextPath}/register"
                            class="fw-semibold">Register</a>
@@ -66,8 +74,8 @@
     </div>
 </div>
 
-<!-- Bootstrap -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script ><jsp:include page="/WEB-INF/views/includes/firebase-config.jsp"/></script>
+
+<jsp:include page="/WEB-INF/views/includes/firebase-config.jsp"/>
 </body>
 </html>

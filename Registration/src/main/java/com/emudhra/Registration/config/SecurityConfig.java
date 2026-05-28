@@ -2,7 +2,10 @@ package com.emudhra.Registration.config;
 
 import com.emudhra.Registration.service.CustomOAuth2UserService;
 import com.emudhra.Registration.service.LoginAuditService;
+//import com.emudhra.Registration.config.SamlSecurityConfig;
+import com.emudhra.Registration.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -19,6 +22,7 @@ import org.springframework.security.saml2.provider.service.registration.RelyingP
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrationRepository;
 import org.springframework.security.saml2.provider.service.registration.RelyingPartyRegistrations;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.saml2.provider.service.web.authentication.Saml2WebSsoAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,7 +30,9 @@ import java.util.Map;
 
 @Configuration
 public class SecurityConfig {
-
+//
+//    @Autowired
+//    private SamlSecurityConfig samlSecurityConfig;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    LoginAuditService loginAuditService,
@@ -35,17 +41,11 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/",
-                                "/home",
-                                "/login",
-                                "/register",
-                                "/google-login",
-                                "/api/emudhra/**",
-                                "/oauth2/**",
-                                "/login/oauth2/**",
-                                "/css/**",
-                                "/js/**",
-                                "/images/**"
+                                "/", "/home", "/login", "/register",
+                                            "/google-login", "/api/emudhra/**",
+                                            "/saml2/**", "/login/saml2/**",
+                                            "/oauth2/**", "/login/oauth2/**",
+                                            "/css/**", "/js/**", "/images/**", "/error"
                         ).permitAll()
                         .anyRequest().permitAll()
                 )
@@ -61,8 +61,15 @@ public class SecurityConfig {
                         )
                 )
 
-                .saml2Login(Customizer.withDefaults())
-
+//                .saml2Login(saml -> saml
+//                        .loginPage("/login")
+//                        .defaultSuccessUrl("/saml/success", true)
+//                        .failureUrl("/login?samlError=true")
+//                )
+                .saml2Login(saml -> saml
+                        .defaultSuccessUrl("/dashboard", true)
+                )
+                .saml2Logout(Customizer.withDefaults())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .addLogoutHandler((request, response, authentication) -> {
@@ -78,7 +85,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
     // 🔥 CUSTOM USER SERVICE (BYPASSES OIDC ISSUER VALIDATION)
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService() {

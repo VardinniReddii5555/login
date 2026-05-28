@@ -21,7 +21,7 @@
 
                     <h1 class="fw-semibold mb-4">Student Login</h1>
                     <!-- Normal Login -->
-                        <form action="${pageContext.request.contextPath}/login" method="post" class="d-grid gap-3">
+                        <form action="${pageContext.request.contextPath}/manual" method="post" class="d-grid gap-3">
                         <input type="text" name="username" class="form-control" placeholder="Username" required>
                         <input type="password" name="password" class="form-control" placeholder="Password" required>
                         <button type="submit" class="btn btn-primary btn-md mt-2">Login</button>

@@ -6,6 +6,8 @@ import com.emudhra.Registration.model.LoginAudit;
 import com.emudhra.Registration.model.Users;
 import com.emudhra.Registration.repository.LoginAuditRepository;
 import com.emudhra.Registration.service.UserService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -35,7 +37,7 @@ public class OAuth2LoginRouterController {
     private EmudhraLoginController emudhraLoginController;
     @Autowired
     private OAuth2AuthorizedClientService clientService;
-
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public OAuth2LoginRouterController(GoogleLoginController googleLoginController,
                                        GithubLoginController githubLoginController,
@@ -87,40 +89,31 @@ public class OAuth2LoginRouterController {
             System.out.println("OAuth2 Success Method Called");
             System.out.println("Authentication: " + authentication);
             System.out.println("Principal: " + principal);
-            String loginMode;
+            String loginMode = switch (registrationId.toLowerCase()) {
 
-            switch (registrationId.toLowerCase()) {
+                case "emudhra" -> LoginModes.OIDC_SSO;
 
-                case "emudhra":
-                    loginMode = LoginModes.OIDC_SSO;
-                    break;
+                case "google" -> LoginModes.GOOGLE_SSO;
 
-                case "google":
-                    loginMode = LoginModes.GOOGLE_SSO;
-                    break;
+                case "github" -> LoginModes.GITHUB_SSO;
 
-                case "github":
-                    loginMode = LoginModes.GITHUB_SSO;
-                    break;
+                case "firebase" -> LoginModes.FIREBASE_SSO;
 
-                case "firebase":
-                    loginMode = LoginModes.FIREBASE_SSO;
-                    break;
+                case "saml" -> LoginModes.SAML_SSO;
 
-                case "saml":
-                    loginMode = LoginModes.SAML_SSO;
-                    break;
+                case "employee-portal" -> LoginModes.KEYCLOCK_OIDC;
 
-                default:
-                    loginMode = LoginModes.MANUAL;
-            }
+                case "employee-portal-2" -> LoginModes.KEYCLOCK_SAML;
+
+                default -> LoginModes.DEFAULT;
+            };
 
             Users user = userService.findByEmail(email);
 
             if (user == null) {
                 user = new Users();
                 user.setEmail(email);
-                user.setPassword("OIDC_USER");
+                user.setPassword(passwordEncoder.encode(email));
                 user.setUsername(name);
                 user.setRegistration_mode(loginMode);
 
@@ -133,7 +126,6 @@ public class OAuth2LoginRouterController {
             loginAudit.setSessionId(session.getId());
             loginAudit.setLoginAt(LocalDateTime.now());
             loginAudit.setLoginMode(loginMode);
-
             loginAuditRepository.save(loginAudit);
             session.setAttribute(SessionAttribute.USER, user);
 
@@ -141,6 +133,8 @@ public class OAuth2LoginRouterController {
             model.addAttribute("username", user.getUsername());
             model.addAttribute("email", user.getEmail());
             model.addAttribute("registration_mode", user.getRegistration_mode());
+            model.addAttribute("loginMode",loginAudit.getLoginMode());
+
             // 🎯 Success page
             return "redirect:/dashboard";
 

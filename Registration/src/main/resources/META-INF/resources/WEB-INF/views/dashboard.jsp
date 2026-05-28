@@ -39,8 +39,12 @@
                     <dt class="col-sm-4">Email</dt>
                     <dd class="col-sm-8">${email}</dd>
 
-                    <dt class="col-sm-4">Mode</dt>
+                    <dt class="col-sm-4">Registration Mode</dt>
                     <dd class="col-sm-8">${registration_mode}</dd>
+
+                    <dt class="col-sm-4">Login Mode</dt>
+                    <dd class="col-sm-8"> ${loginMode}</dd>
+
                 </dl>
             </div>
         </div>

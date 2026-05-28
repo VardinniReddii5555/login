@@ -10,23 +10,21 @@
 
 <body class="auth-bg">
     <jsp:include page="/WEB-INF/views/includes/error.jsp"/>
-    <div class="container mt-4">
+    <div class="container m-5">
         <div class="row justify-content-center">
-            <div class="col-md-7 col-lg-5">
+            <div class="col-md-7 col-lg-6">
 
                 <div class="card shadow-sm border-0 rounded-4 p-4 p-md-5">
 
-                    <h3 class="text-center mb-4">Student Registration</h3>
+                    <h3 class="text-center mt-2 mb-5">Employee Registration Portal</h3>
 
                     <!-- Manual Registration  -->
                      <form id="registerForm" action="${pageContext.request.contextPath}/register" method="post" class="d-grid gap-3">
-                        <label class="form-label">Username</label>
-                                        <input type="text" id="username" name="username" class="form-control" required>
-                        <label class="form-label">Email</label>
-                                        <input type="email" id="email" name="email" class="form-control" pattern="^[A-Za-z0-9._%+-]+@^[A-Za-z0-9._%+-]$" required>
-                        <label class="form-label">Password</label>
-                                        <input type="password" id="password" name="password" class="form-control" minlength="6" maxlength="8" required>
-                        <button type="submit" class="btn btn-primary btn-md col-12 mt-3 d-block mx-auto">Register Manually</button>
+
+                        <input type="text" name="username" id="username"  class="form-control" placeholder="Create Your Username"required>
+                        <input type="email" name="email" id="email"  class="form-control"  placeholder="Enter Your Mail-ID" pattern="^[A-Za-z0-9._%+-]+@^[A-Za-z0-9._%+-]$" required>
+                        <input type="password" name="password" id="password"  class="form-control"  placeholder="Create Your Password" minlength="6" maxlength="8" required>
+                        <button type="submit" class="btn btn-primary btn-md mt-4">Register Manually</button>
 
                         <hr/>
                          <p class="text-center text-secondary mt-1 mb-0">Already Registered?

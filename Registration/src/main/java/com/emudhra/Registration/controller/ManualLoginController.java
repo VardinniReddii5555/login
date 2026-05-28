@@ -1,7 +1,10 @@
 package com.emudhra.Registration.controller;
 
 import com.emudhra.Registration.constants.LoginModes;
+import com.emudhra.Registration.constants.SessionAttribute;
+import com.emudhra.Registration.model.LoginAudit;
 import com.emudhra.Registration.model.Users;
+import com.emudhra.Registration.repository.LoginAuditRepository;
 import com.emudhra.Registration.repository.UserRepository;
 import com.emudhra.Registration.service.LoginAuditService;
 import jakarta.servlet.http.HttpSession;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -28,7 +32,8 @@ public class ManualLoginController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final LoginAuditService loginAuditService;
-
+    @Autowired
+    private LoginAuditRepository loginAuditRepository;
     private final Map<String, Integer> failedAttempts = new ConcurrentHashMap<>();
     private final Map<String, Instant> blockedUntil = new ConcurrentHashMap<>();
 
@@ -63,6 +68,22 @@ public class ManualLoginController {
         }
         //Password mismatch
         if (!passwordEncoder.matches(password, user.getPassword())) {
+            LoginAudit loginAudit =
+                    new LoginAudit();
+
+            loginAudit.setUser(user);
+
+            loginAudit.setLoginMode(
+                    LoginModes.MANUAL
+            );
+
+            loginAudit.setLoginAt(LocalDateTime.now());
+            loginAuditRepository.save(loginAudit);
+            session.setAttribute(
+                    SessionAttribute.USER,
+                    user
+            );
+
             applyFailedAttempt(username, model);
             return "login";
         }
@@ -74,13 +95,13 @@ public class ManualLoginController {
 
         // 🔥 LOGIN AUDIT
         loginAuditService.startSessionAudit(user, session, LoginModes.MANUAL);
-
+        LoginAudit loginAudit = loginAuditRepository.findTopByUserIdOrderByLoginAtDesc(user.getId());
         // ✅ SEND TO DASHBOARD
         model.addAttribute("id", user.getId());
         model.addAttribute("username", user.getUsername());
         model.addAttribute("email", user.getEmail());
         model.addAttribute("registration_mode", user.getRegistration_mode());
-
+        model.addAttribute("loginMode", loginAudit.getLoginMode());
         return "dashboard";
     }
     private boolean isBlocked(String username, Model model) {

@@ -37,6 +37,7 @@ public class Users {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", registration_mode='" + registration_mode + '\'' +
+
                 '}';
     }
 
