@@ -30,9 +30,9 @@ import java.util.Map;
 
 @Configuration
 public class SecurityConfig {
-//
-//    @Autowired
-//    private SamlSecurityConfig samlSecurityConfig;
+
+    @Autowired
+    private SamlSecurityConfig samlSecurityConfig;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    LoginAuditService loginAuditService,
@@ -52,7 +52,7 @@ public class SecurityConfig {
 
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
-                        .defaultSuccessUrl("/oauth2/success", true)
+                        .defaultSuccessUrl("/dashboard", true)
                         .failureUrl("/login?oauth2Error=true")
 
                         // 🔥 IMPORTANT FIX (OAuth2 fallback instead of OIDC validation)
@@ -60,15 +60,16 @@ public class SecurityConfig {
                                 .userService(customOAuth2UserService)
                         )
                 )
-
-//                .saml2Login(saml -> saml
-//                        .loginPage("/login")
-//                        .defaultSuccessUrl("/saml/success", true)
-//                        .failureUrl("/login?samlError=true")
-//                )
+//
                 .saml2Login(saml -> saml
-                        .defaultSuccessUrl("/dashboard", true)
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/saml/success", true)
+                        .failureUrl("/login?samlError=true")
                 )
+//                .saml2Login(saml -> saml
+//                        .defaultSuccessUrl("/dashboard", true)
+//                )
+                .saml2Metadata(Customizer.withDefaults())
                 .saml2Logout(Customizer.withDefaults())
                 .logout(logout -> logout
                         .logoutUrl("/logout")

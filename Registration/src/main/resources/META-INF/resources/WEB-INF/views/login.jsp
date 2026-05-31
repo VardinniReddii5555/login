@@ -49,10 +49,8 @@
 
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="btn btn-outline-primary mb-3">Log in with Google (OAuth2)</a>
 
-
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/employee-portal" class="btn btn-outline-dark mb-3">Log in with Keyclock [OIDC]</a>
-                        <a href="${pageContext.request.contextPath}/saml2/authenticate/employee-portal-2" class="btn btn-outline-dark mb-3">Log in with Keyclock [SAML]</a>
-
+                        <a href="${pageContext.request.contextPath}/saml2/authenticate/keycloak" class="btn btn-outline-dark mb-3">Log in with Keyclock [SAML]</a>
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/github" class="btn btn-outline-dark mb-3">Log in with GitHub (OAuth2)</a>
 
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/emudhra" class="btn btn-outline-warning mb-3">Log in with Emudhra [OIDC] (OAuth2)</a>
