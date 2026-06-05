@@ -3,6 +3,7 @@ package com.emudhra.Registration.constants;
 public final class LoginModes {
 
     public static final String MANUAL = "MANUAL";
+    public static final String SMTP_AUTH = "SMTP_AUTH";
     public static final String FIREBASE_SSO = "FIREBASE_SSO";
     public static final String GOOGLE_SSO = "GOOGLE_SSO";
     public static final String GITHUB_SSO = "GITHUB_SSO";

@@ -8,12 +8,9 @@ import com.emudhra.Registration.repository.LoginAuditRepository;
 import com.emudhra.Registration.service.UserService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
-import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,23 +26,23 @@ public class OAuth2LoginRouterController {
     private UserService userService;
     @Autowired
     private LoginAuditRepository loginAuditRepository;
-    @Autowired
-    private GoogleLoginController googleLoginController;
-    @Autowired
-    private GithubLoginController githubLoginController;
-    @Autowired
-    private EmudhraLoginController emudhraLoginController;
-    @Autowired
-    private OAuth2AuthorizedClientService clientService;
+//    @Autowired
+//    private GoogleLoginController googleLoginController;
+//    @Autowired
+//    private GithubLoginController githubLoginController;
+//    @Autowired
+//    private EmudhraLoginController emudhraLoginController;
+//    @Autowired
+//    private OAuth2AuthorizedClientService clientService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public OAuth2LoginRouterController(GoogleLoginController googleLoginController,
-                                       GithubLoginController githubLoginController,
-                                       EmudhraLoginController emudhraLoginController) {
-        this.googleLoginController = googleLoginController;
-        this.githubLoginController = githubLoginController;
-        this.emudhraLoginController = emudhraLoginController;
-    }
+//    public OAuth2LoginRouterController(GoogleLoginController googleLoginController,
+//                                       GithubLoginController githubLoginController,
+//                                       EmudhraLoginController emudhraLoginController) {
+//        this.googleLoginController = googleLoginController;
+//        this.githubLoginController = githubLoginController;
+//        this.emudhraLoginController = emudhraLoginController;
+//    }
 
     @GetMapping("/oauth2/success")
     public String oauth2Success(OAuth2AuthenticationToken authentication,
@@ -56,6 +53,12 @@ public class OAuth2LoginRouterController {
         if (principal == null) {
             return "redirect:/login";
         }
+
+
+        System.out.println(
+                "SESSION SAVED = "
+                        + session.getAttribute(SessionAttribute.USER)
+        );
 
         try {
 

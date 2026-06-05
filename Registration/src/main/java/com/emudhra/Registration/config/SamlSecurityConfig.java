@@ -28,6 +28,7 @@ public class SamlSecurityConfig {
                         .withRegistrationId("keycloak")
                         .entityId("employee_portal")
                         .assertionConsumerServiceLocation("http://localhost:9090/login/saml2/sso/keycloak")
+                        .singleLogoutServiceLocation("http://localhost:9090/logout/saml2/slo")
                         .assertingPartyMetadata(party -> party
                                 .entityId("http://localhost:9091/realms/EmployeePortal")
                                 .singleSignOnServiceLocation("http://localhost:9091/realms/EmployeePortal/protocol/saml")
@@ -38,11 +39,11 @@ public class SamlSecurityConfig {
         RelyingPartyRegistration emudhraRegistration =
                 RelyingPartyRegistration
                         .withRegistrationId("emudhra")
-                        .entityId("http://localhost:9090/saml2/service-provider-metadata/emudhra")
-                        .assertionConsumerServiceLocation("http://localhost:9090/login/saml2/sso/emudhra")
+                        .entityId("http://10.80.244.101:9090/saml2/service-provider-metadata/emudhra")
+                        .assertionConsumerServiceLocation("http://10.80.244.101:9090/login/saml2/sso/emudhra")
                         .assertingPartyMetadata(party -> party
-                                .entityId("https://qa.securepass.me")
-                                .singleSignOnServiceLocation("https://qa.securepass.me/SPAuthPage/ssoEntryAuth")
+                                .entityId("https://demo.securepass.me")
+                                .singleSignOnServiceLocation("https://demo.securepass.me/SPAuthPage/saml2/sso/1")
                                 .wantAuthnRequestsSigned(false)
                                 .verificationX509Credentials(c -> c.add(verificationCredential)))
                         .build();
