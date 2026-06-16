@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -52,6 +54,30 @@ public class SamlHeaderFilter extends OncePerRequestFilter {
             filterChain.doFilter(wrapped, response);
             return;
         }
+        if (request.getRequestURI().contains("/login/saml2/sso/emudhra")) {
+            System.out.println("ACS ENDPOINT HIT : /login/saml2/sso/emudhra ");
+            System.out.println("SAMLResponse Present: "
+                    + (request.getParameter("SAMLResponse") != null));
+        }
+
+             if (request.getRequestURI().contains("/login/saml2/sso/emudhra")) {
+
+                String samlResponse = request.getParameter("SAMLResponse");
+
+                if (samlResponse != null) {
+
+                    System.out.println("===== DECODED SAML =====");
+
+                    System.out.println(
+                            new String(
+                                    java.util.Base64.getDecoder().decode(samlResponse)
+                            )
+                    );
+
+                    System.out.println("===== END SAML =====");
+                }
+        }
+
         filterChain.doFilter(request, response);
     }
 }

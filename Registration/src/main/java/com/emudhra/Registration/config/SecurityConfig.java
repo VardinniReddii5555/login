@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -19,6 +20,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.saml2.provider.service.web.authentication.Saml2WebSsoAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.Collections;
@@ -29,8 +31,13 @@ import java.util.Map;
 public class SecurityConfig {
     @Autowired
     private  HeaderAuthenticationFilter headerAuthenticationFilter;
+//    @Autowired
+//    private SamlHeaderFilter samlHeaderFilter;
     @Autowired
-    private SamlHeaderFilter samlHeaderFilter;
+    private SamlDebugFilter samlDebugFilter;
+//    @Autowired
+//    private OidcDebugFilter oidcDebugFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    LoginAuditService loginAuditService,
@@ -62,6 +69,7 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .defaultSuccessUrl("/saml/success", true)
                         .failureUrl("/login?samlError=true")
+                        .failureHandler(samlFailureHandler())
                 )
                 .saml2Metadata(Customizer.withDefaults())
                 .logout(logout -> logout
@@ -77,18 +85,35 @@ public class SecurityConfig {
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
-                );
-        http.addFilterBefore(
-                headerAuthenticationFilter,
-                UsernamePasswordAuthenticationFilter.class
-        );
-        http.addFilterAfter(
-                samlHeaderFilter,
-                Saml2WebSsoAuthenticationFilter.class
-        );
+                )
+//                .addFilterBefore(
+//                        headerAuthenticationFilter,
+//                        UsernamePasswordAuthenticationFilter.class
+//                )
+//                .addFilterBefore(
+//                        oidcDebugFilter,
+//                        UsernamePasswordAuthenticationFilter.class
+//                )
+                .addFilterBefore(
+                        samlDebugFilter,
+                        Saml2WebSsoAuthenticationFilter.class
+                )
+//                .addFilterAfter(
+//                        samlHeaderFilter,
+//                        Saml2WebSsoAuthenticationFilter.class
+//                )
 
-        return http.build();
+                .sessionManagement(session -> session
+                        .sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::migrateSession)
+                );
+
+                return http.build();
     }
+
+    private AuthenticationFailureHandler samlFailureHandler() {
+        return null;
+    }
+
     // 🔥 CUSTOM USER SERVICE (BYPASSES OIDC ISSUER VALIDATION)
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService() {

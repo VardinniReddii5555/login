@@ -107,20 +107,25 @@
                     <hr/>
 
                     <!-- Auth Login -->
-                     <div class="text-center d-grid gap-1">
+
+                    <div class="text-center d-grid gap-1">
+                     <a href="${pageContext.request.contextPath}/authenticator-login" class="btn btn-light border-secondary-subtle border-1 mb-3">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="logo"> Log in with Authenticator </a>
+
+                        <a href="${pageContext.request.contextPath}/oauth2/authorization/emudhra" class="btn btn-outline-warning mb-3">
+                            <img src="https://yt3.googleusercontent.com/t2BW9FUl35Nc7u7wES6eHYeS4mQ5-ic8kOjEkh-YYY-YLTMjm9hgJ53MTjkeXCBBX5SbJvtQzFI=s900-c-k-c0x00ffffff-no-rj" class="logo">Log in with Emudhra [OIDC] </a>
+                        <a href="${pageContext.request.contextPath}/saml2/authenticate/emudhra" class="btn btn-outline-purple mb-3">
+                            <img src="https://yt3.googleusercontent.com/t2BW9FUl35Nc7u7wES6eHYeS4mQ5-ic8kOjEkh-YYY-YLTMjm9hgJ53MTjkeXCBBX5SbJvtQzFI=s900-c-k-c0x00ffffff-no-rj" class="logo">Log in with Emudhra [SAMl] </a>
+
+                        <a href="${pageContext.request.contextPath}/oauth2/authorization/github" class="btn btn-outline-dark mb-3">
+                            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" class="logo">Log in with GitHub (OAuth2)</a>
+                            <!-----Localhost logins--->
                         <button type="button" id="firebaseSignIn" class="btn btn-light border-secondary-subtle border-1 mb-3">
-                                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="logo">
-                                       Log in with Google(Firebase) </button>
+                                                         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="logo">
+                                                               Log in with Google(Firebase) </button>
 
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="btn btn-outline-primary mb-3">
                             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="logo">Log in with Google (OAuth2)</a>
-                        <a href="${pageContext.request.contextPath}/oauth2/authorization/github" class="btn btn-outline-dark mb-3">
-                            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" class="logo">Log in with GitHub (OAuth2)</a>
-
-                        <a href="${pageContext.request.contextPath}/oauth2/authorization/emudhra" class="btn btn-outline-warning mb-3">
-                            <img src="https://yt3.googleusercontent.com/t2BW9FUl35Nc7u7wES6eHYeS4mQ5-ic8kOjEkh-YYY-YLTMjm9hgJ53MTjkeXCBBX5SbJvtQzFI=s900-c-k-c0x00ffffff-no-rj" class="logo">Log in with Emudhra [OIDC] (OAuth2)</a>
-                        <a href="${pageContext.request.contextPath}/saml2/authenticate/emudhra" class="btn btn-outline-purple mb-3">
-                            <img src="https://yt3.googleusercontent.com/t2BW9FUl35Nc7u7wES6eHYeS4mQ5-ic8kOjEkh-YYY-YLTMjm9hgJ53MTjkeXCBBX5SbJvtQzFI=s900-c-k-c0x00ffffff-no-rj" class="logo">Log in with Emudhra [SAMl] (OAuth2)</a>
 
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/employee-portal" class="btn btn-outline-dark mb-3">
                             <img src="https://thf.bing.com/th/id/ODF.jc9sIfRjWdw7BWr4dkaj7g?w=32&h=32&qlt=90&pcl=fffffc&o=6&pid=1.2" class="logo">Log in with Keyclock [OIDC]</a>

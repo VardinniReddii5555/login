@@ -1,11 +1,16 @@
 package com.emudhra.Registration.config;
 
+import com.emudhra.Registration.repository.SamlFailureHandler;
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.saml2.core.Saml2X509Credential;
+import org.springframework.security.saml2.provider.service.authentication.AbstractSaml2AuthenticationRequest;
 import org.springframework.security.saml2.provider.service.registration.*;
+import org.springframework.security.saml2.provider.service.web.HttpSessionSaml2AuthenticationRequestRepository;
+import org.springframework.security.saml2.provider.service.web.Saml2AuthenticationRequestRepository;
+
 import java.io.InputStream;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
@@ -27,31 +32,81 @@ public class SamlSecurityConfig {
                 RelyingPartyRegistration
                         .withRegistrationId("keycloak")
                         .entityId("employee_portal")
-                        .assertionConsumerServiceLocation("http://localhost:9090/login/saml2/sso/keycloak")
-                        .singleLogoutServiceLocation("http://localhost:9090/logout/saml2/slo")
+                        .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/keycloak")
+                        .singleLogoutServiceLocation("{baseUrl}/logout/saml2/slo")
                         .assertingPartyMetadata(party -> party
                                 .entityId("http://localhost:9091/realms/EmployeePortal")
                                 .singleSignOnServiceLocation("http://localhost:9091/realms/EmployeePortal/protocol/saml")
                                 .wantAuthnRequestsSigned(false)
+                                .singleLogoutServiceLocation("{baseurl}/logout/saml2/slo")
                                 .verificationX509Credentials(c -> c.add(verificationCredential)))
                         .build();
+
+
 //        EMUDHRA SAML
         RelyingPartyRegistration emudhraRegistration =
                 RelyingPartyRegistration
                         .withRegistrationId("emudhra")
-                        .entityId("http://10.80.244.101:9090/saml2/service-provider-metadata/emudhra")
-                        .assertionConsumerServiceLocation("http://10.80.244.101:9090/login/saml2/sso/emudhra")
+                        .entityId("http://10.80.241.94:9090/saml2/service-provider-metadata/emudhra")
+                        .assertionConsumerServiceLocation("http://10.80.241.94:9090/login/saml2/sso/emudhra")
+//                        .singleLogoutServiceLocation("{baseUrl}/logout/saml2/slo")
+//                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress")
+                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified")
+//                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format::X509SubjectName")
+//                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:transient")
+//                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:persistent")
+//                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:entity")
+//                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:encrypted")
+
                         .assertingPartyMetadata(party -> party
-                                .entityId("https://demo.securepass.me")
+                                .entityId("https://demo.securepass.me/SPAuthPage/saml/metadata")
                                 .singleSignOnServiceLocation("https://demo.securepass.me/SPAuthPage/saml2/sso/1")
                                 .wantAuthnRequestsSigned(false)
+//                                .singleLogoutServiceLocation("{baseurl}/logout/saml2/slo")
                                 .verificationX509Credentials(c -> c.add(verificationCredential)))
                         .build();
+        System.out.println(
+                "Certificate Subject: "
+                        + certificate.getSubjectX500Principal()
+        );
 
         return new InMemoryRelyingPartyRegistrationRepository(keycloakRegistration, emudhraRegistration);
+    }
+
+        @Bean
+        public Saml2X509Credential verificationCredential() throws Exception {
+
+            ClassPathResource resource =
+                    new ClassPathResource("emudhra.crt");
+
+            System.out.println("Exists = " + resource.exists());
+            System.out.println("Length = " + resource.contentLength());
+
+            InputStream is = resource.getInputStream();
+
+            System.out.println("InputStream = " + is);
+
+            CertificateFactory factory =
+                    CertificateFactory.getInstance("X.509");
+
+            X509Certificate certificate1 =
+                    (X509Certificate) factory.generateCertificate(is);
+
+            return Saml2X509Credential.verification(certificate1);
+        }
+
+    @Bean
+    public Saml2AuthenticationRequestRepository<AbstractSaml2AuthenticationRequest>
+    saml2AuthenticationRequestRepository() {
+        return new HttpSessionSaml2AuthenticationRequestRepository();
+    }
+    @Bean
+    public SamlFailureHandler samlFailureHandler() {
+        return new SamlFailureHandler();
     }
     @PostConstruct
     public void test() {
         System.out.println("Registration loaded");
     }
+
 }

@@ -1,0 +1,36 @@
+<md:EntityDescriptor xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" entityID="https://demo.securepass.me/SPAuthPage/saml/metadata" >
+    <md:IDPSSODescriptor WantAuthnRequestsSigned="false" protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+        <md:KeyDescriptor use="signing">
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>MIIDIjCCAgqgAwIBAgIQDWI5s99XBOVCOusiSlgGhzANBgkqhkiG9w0BAQsFADAzMQswCQYDVQQGEwJJTjEQMA4GA1UEChMHRW11ZGhyYTESMBAGA1UEAxMJSXNzaW5nQ0ExMB4XDTI2MDQyMzA5MDkxM1oXDTI4MDQyMjE4Mjk1OVowNTELMAkGA1UEBhMCSU4xJjAkBgNVBAMTHVNlY3VyZXBhc3NTYW1sRGF0YVNpZ25pbmdDZXJ0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtoKLqvuVpoPnMqpqOt09sFXpwzOLPXGK07fQl2/cappF32IzrsOWoIz2/xprb+xKPoc5vKnAfD1QJDaB5hXZVH5GBhtOr7qic+o9G98oQaYrGuETVn+KaZsxSiRr4/POCqgfyZerx5oQrgmR1VCa/D3lX3sBkBN9MxgXc0ROoK5PTDpeoxULQ9OsnCg2WOPNB7e7pV5kvpfKtUybxiyPpYULC+iH1dklEeBwRe+svlfPP5UzV4ovgvSJ9ipY8pjnNxshXog+DzKmu4p5cksl0v2zzgnV5f0IOACRRc1lyBT8I6lBGFTIqDgFjCogSYErnWrNcdcF4RqmzI5Bw2tLwQIDAQABozAwLjALBgNVHQ8EBAMCBsAwHwYDVR0jBBgwFoAUmuXSqaSghhuNWsLdEgWpkoYN2T8wDQYJKoZIhvcNAQELBQADggEBAOQHQbgMunm/icji6Zz1ND5IWCDZQ8irl8ybavxLIXnXwQNEXuBe6xqWAh6yuUEOibHeSajMckfaerNNqQ5gyQ7fLwMuaNBanT9yZVkwfypbGleL7cITu+WoscCSRaHDjRvPahNkEgzsu8lLNW6AcRVKcG+hNexmJB0hGr0Jvq6AppOmIiJcDCmua1Oxikni3yrOPLBS/NE6PtHdvEH0bZznwnISH+ABf6Spwvv1vxYxE9GnzG0ML5YBeYIRJRV9Xt+H0vr9tnl67s+fOLhLm8hVlzB0LNZDjqjLYgfshst4ASRF+equbA9htJFTH7mj2vJLM2WvJ2aLfHTa+Vh3CSM=</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:KeyDescriptor use="encryption">
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>MIIDIjCCAgqgAwIBAgIQDWI5s99XBOVCOusiSlgGhzANBgkqhkiG9w0BAQsFADAzMQswCQYDVQQGEwJJTjEQMA4GA1UEChMHRW11ZGhyYTESMBAGA1UEAxMJSXNzaW5nQ0ExMB4XDTI2MDQyMzA5MDkxM1oXDTI4MDQyMjE4Mjk1OVowNTELMAkGA1UEBhMCSU4xJjAkBgNVBAMTHVNlY3VyZXBhc3NTYW1sRGF0YVNpZ25pbmdDZXJ0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAtoKLqvuVpoPnMqpqOt09sFXpwzOLPXGK07fQl2/cappF32IzrsOWoIz2/xprb+xKPoc5vKnAfD1QJDaB5hXZVH5GBhtOr7qic+o9G98oQaYrGuETVn+KaZsxSiRr4/POCqgfyZerx5oQrgmR1VCa/D3lX3sBkBN9MxgXc0ROoK5PTDpeoxULQ9OsnCg2WOPNB7e7pV5kvpfKtUybxiyPpYULC+iH1dklEeBwRe+svlfPP5UzV4ovgvSJ9ipY8pjnNxshXog+DzKmu4p5cksl0v2zzgnV5f0IOACRRc1lyBT8I6lBGFTIqDgFjCogSYErnWrNcdcF4RqmzI5Bw2tLwQIDAQABozAwLjALBgNVHQ8EBAMCBsAwHwYDVR0jBBgwFoAUmuXSqaSghhuNWsLdEgWpkoYN2T8wDQYJKoZIhvcNAQELBQADggEBAOQHQbgMunm/icji6Zz1ND5IWCDZQ8irl8ybavxLIXnXwQNEXuBe6xqWAh6yuUEOibHeSajMckfaerNNqQ5gyQ7fLwMuaNBanT9yZVkwfypbGleL7cITu+WoscCSRaHDjRvPahNkEgzsu8lLNW6AcRVKcG+hNexmJB0hGr0Jvq6AppOmIiJcDCmua1Oxikni3yrOPLBS/NE6PtHdvEH0bZznwnISH+ABf6Spwvv1vxYxE9GnzG0ML5YBeYIRJRV9Xt+H0vr9tnl67s+fOLhLm8hVlzB0LNZDjqjLYgfshst4ASRF+equbA9htJFTH7mj2vJLM2WvJ2aLfHTa+Vh3CSM=</ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </md:KeyDescriptor>
+        <md:SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://demo.securepass.me/SPAuthPage/saml/logout"/>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:persistent</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:entity</md:NameIDFormat>
+        <md:NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:encrypted</md:NameIDFormat>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://demo.securepass.me/SPAuthPage/ssoEntryAuth.htm"/>
+        <md:SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://demo.securepass.me/SPAuthPage/ssoEntryAuth.htm"/>
+    </md:IDPSSODescriptor>
+    <md:Organization>
+        <md:OrganizationName xml:lang="en">eMudhra Securepass</md:OrganizationName>
+        <md:OrganizationDisplayName xml:lang="en">eMudhra Securepass Identity and Access Management</md:OrganizationDisplayName>
+        <md:OrganizationURL xml:lang="en">https://demo.securepass.me/SPAuthPage</md:OrganizationURL>
+    </md:Organization>
+    <md:ContactPerson contactType="technical">
+        <md:Company>eMudhra</md:Company>
+    </md:ContactPerson>
+</md:EntityDescriptor>

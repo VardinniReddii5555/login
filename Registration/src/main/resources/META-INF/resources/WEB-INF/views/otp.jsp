@@ -30,7 +30,18 @@
                         </div>
                     </c:if>
                     <form action="${pageContext.request.contextPath}/verify-otp" method="post" class="d-grid gap-3">
-                        <input type="text" name="otp" maxlength="6" placeholder="Enter OTP" class="form-control" required>
+                        <form action="/verify-email-otp" method="post">
+
+                                <div class="d-flex justify-content-center gap-2 mb-4">
+                                    <input type="text" maxlength="1" class="form-control otp-input" required>
+                                    <input type="text" maxlength="1" class="form-control otp-input" required>
+                                    <input type="text" maxlength="1" class="form-control otp-input" required>
+                                    <input type="text" maxlength="1" class="form-control otp-input" required>
+                                    <input type="text" maxlength="1" class="form-control otp-input" required>
+                                    <input type="text" maxlength="1" class="form-control otp-input" required>
+                                </div>
+
+                                <input type="hidden" id="otp" name="otp">
                             <button type="submit" class="btn btn-primary">Verify OTP</button>
 
                     </form>
@@ -41,5 +52,32 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    const inputs = document.querySelectorAll(".otp-input");
+    const hiddenOtp = document.getElementById("otp");
+
+    inputs.forEach((input, index) => {
+
+        input.addEventListener("input", (e) => {
+            e.target.value = e.target.value.replace(/[^0-9]/g, "");
+            if (e.target.value && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+            hiddenOtp.value = [...inputs]
+                .map(i => i.value)
+                .join("");
+        });
+
+        input.addEventListener("keydown", (e) => {
+
+            if (e.key === "Backspace" && !input.value && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+    });
+});
+</script>
 </body>
 </html>

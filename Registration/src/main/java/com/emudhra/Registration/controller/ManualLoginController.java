@@ -68,21 +68,14 @@ public class ManualLoginController {
         }
         //Password mismatch
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            LoginAudit loginAudit =
-                    new LoginAudit();
+            LoginAudit loginAudit = new LoginAudit();
 
             loginAudit.setUser(user);
-
-            loginAudit.setLoginMode(
-                    LoginModes.MANUAL
-            );
-
+            loginAudit.setSessionId(session.getId());
+            loginAudit.setLoginMode(LoginModes.MANUAL);
             loginAudit.setLoginAt(LocalDateTime.now());
             loginAuditRepository.save(loginAudit);
-            session.setAttribute(
-                    SessionAttribute.USER,
-                    user
-            );
+            session.setAttribute(SessionAttribute.USER, user);
 
             applyFailedAttempt(username, model);
             return "login";
