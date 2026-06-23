@@ -22,4 +22,5 @@ public class LogoutController {
         System.out.println("Audit ID: " + session.getAttribute(SessionAttribute.ACTIVE_LOGIN_AUDIT_ID));
         return "redirect:/login?logot=true";
     }
+
 }

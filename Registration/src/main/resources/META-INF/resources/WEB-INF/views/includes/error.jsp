@@ -21,3 +21,18 @@
         </div>
     </div>
 </c:if>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    document.querySelectorAll(".toast").forEach(function (el) {
+
+        const toast = new bootstrap.Toast(el, {
+            delay: 3000
+        });
+
+        toast.show();
+    });
+
+});
+</script>

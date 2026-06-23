@@ -109,28 +109,36 @@
                     <!-- Auth Login -->
 
                     <div class="text-center d-grid gap-1">
-                     <a href="${pageContext.request.contextPath}/authenticator-login" class="btn btn-light border-secondary-subtle border-1 mb-3">
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="logo"> Log in with Authenticator </a>
-
-                        <a href="${pageContext.request.contextPath}/oauth2/authorization/emudhra" class="btn btn-outline-warning mb-3">
-                            <img src="https://yt3.googleusercontent.com/t2BW9FUl35Nc7u7wES6eHYeS4mQ5-ic8kOjEkh-YYY-YLTMjm9hgJ53MTjkeXCBBX5SbJvtQzFI=s900-c-k-c0x00ffffff-no-rj" class="logo">Log in with Emudhra [OIDC] </a>
-                        <a href="${pageContext.request.contextPath}/saml2/authenticate/emudhra" class="btn btn-outline-purple mb-3">
-                            <img src="https://yt3.googleusercontent.com/t2BW9FUl35Nc7u7wES6eHYeS4mQ5-ic8kOjEkh-YYY-YLTMjm9hgJ53MTjkeXCBBX5SbJvtQzFI=s900-c-k-c0x00ffffff-no-rj" class="logo">Log in with Emudhra [SAMl] </a>
+                        <a href="${pageContext.request.contextPath}/authenticator-login" class="btn btn-light border-secondary-subtle border-1 mb-3">
+                            <img src="https://tse1.mm.bing.net/th/id/OIP.2lPmuvTvtaEwIUZa_-YrVgHaHa?r=0&cb=thfc1falcon2&w=768&h=768&rs=1&pid=ImgDetMain&o=7&rm=3" class="logo">   Log in with Authenticator </a>
 
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/github" class="btn btn-outline-dark mb-3">
-                            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" class="logo">Log in with GitHub (OAuth2)</a>
-                            <!-----Localhost logins--->
-                        <button type="button" id="firebaseSignIn" class="btn btn-light border-secondary-subtle border-1 mb-3">
-                                                         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="logo">
-                                                               Log in with Google(Firebase) </button>
+                            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" class="logo">   Log in with GitHub (OAuth2)</a>
 
-                        <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="btn btn-outline-primary mb-3">
-                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="logo">Log in with Google (OAuth2)</a>
+                        <a href="${pageContext.request.contextPath}/oauth2/authorization/emudhra" class="btn btn-outline-warning mb-3">
+                            <img src="https://yt3.googleusercontent.com/t2BW9FUl35Nc7u7wES6eHYeS4mQ5-ic8kOjEkh-YYY-YLTMjm9hgJ53MTjkeXCBBX5SbJvtQzFI=s900-c-k-c0x00ffffff-no-rj" class="logo">   Log in with SecurePass [OIDC] </a>
+                        <a href="${pageContext.request.contextPath}/saml2/authenticate/emudhra" class="btn btn-outline-purple mb-3">
+                            <img src="https://yt3.googleusercontent.com/t2BW9FUl35Nc7u7wES6eHYeS4mQ5-ic8kOjEkh-YYY-YLTMjm9hgJ53MTjkeXCBBX5SbJvtQzFI=s900-c-k-c0x00ffffff-no-rj" class="logo">   Log in with SecurePass [SAMl] </a>
+
+                        <a href="${pageContext.request.contextPath}/oauth2/authorization/github" class="btn btn-outline-dark mb-3">
+                            <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" class="logo">   Log in with GitHub (OAuth2)</a>
 
                         <a href="${pageContext.request.contextPath}/oauth2/authorization/employee-portal" class="btn btn-outline-dark mb-3">
-                            <img src="https://thf.bing.com/th/id/ODF.jc9sIfRjWdw7BWr4dkaj7g?w=32&h=32&qlt=90&pcl=fffffc&o=6&pid=1.2" class="logo">Log in with Keyclock [OIDC]</a>
+                            <img src="https://thf.bing.com/th/id/ODF.jc9sIfRjWdw7BWr4dkaj7g?w=32&h=32&qlt=90&pcl=fffffc&o=6&pid=1.2" class="logo">   Log in with Keyclock [OIDC]</a>
                         <a href="${pageContext.request.contextPath}/saml2/authenticate/keycloak" class="btn btn-outline-dark mb-3">
-                            <img src="https://thf.bing.com/th/id/ODF.jc9sIfRjWdw7BWr4dkaj7g?w=32&h=32&qlt=90&pcl=fffffc&o=6&pid=1.2" class="logo">Log in with Keyclock [SAML]</a>
+                            <img src="https://thf.bing.com/th/id/ODF.jc9sIfRjWdw7BWr4dkaj7g?w=32&h=32&qlt=90&pcl=fffffc&o=6&pid=1.2" class="logo">   Log in with Keyclock [SAML]</a>
+                        <a href="${pageContext.request.contextPath}/jwt-login" class="btn btn-outline-dark mb-3">
+                            <img src="https://thf.bing.com/th/id/ODF.jc9sIfRjWdw7BWr4dkaj7g?w=32&h=32&qlt=90&pcl=fffffc&o=6&pid=1.2" class="logo">   Log in with Keyclock [JWT] </a>
+
+                            <!-----Localhost logins--->
+                        <button type="button" id="firebaseSignIn" class="btn btn-light border-secondary mb-3">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="logo">   Log in with Google(Firebase) </button>
+
+                        <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="btn btn-outline-google mb-3">
+                            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="logo">   Log in with Google (OAuth2)</a>
+
+                        <a href="${pageContext.request.contextPath}/oauth2/authorization/microsoft" class="btn btn-outline-green mb-3">
+                             <img src="https://thf.bing.com/th?q=Microsoft+Windows+7+Logo&w=120&h=120&c=1&rs=1&qlt=70&r=0&o=7&cb=1&dpr=1.5&pid=InlineBlock&rm=3&mkt=en-IN&cc=IN&setlang=en&adlt=moderate&t=1&mw=247" class="logo">  Log in with Microsoft (Auth2) </a>
 
                     </div>
 
@@ -148,19 +156,15 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-
-    document.querySelectorAll(".toast").forEach(function (toastEl) {
-
-        const toast = new bootstrap.Toast(toastEl, {
-            delay: 5000,
-            autohide: true
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".toast").forEach(function (toastEl) {
+            const toast = new bootstrap.Toast(toastEl, {
+                delay: 3000,
+                autohide: true
+            });
+            toast.show();
         });
-
-        toast.show();
     });
-
-});
 </script>
 <jsp:include page="/WEB-INF/views/includes/firebase-config.jsp"/>
 </body>

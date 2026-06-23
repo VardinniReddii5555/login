@@ -48,6 +48,7 @@ public class ManualLoginController {
 
     @GetMapping({"", "/", "/login"})
     public String showLoginPage() {
+
         return "login";
     }
 

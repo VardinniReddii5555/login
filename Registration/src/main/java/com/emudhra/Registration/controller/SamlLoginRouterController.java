@@ -42,44 +42,26 @@ public class SamlLoginRouterController {
 
         String email = Optional.ofNullable(
                 principal.getFirstAttribute("email")
-        ).orElse(principal.getName()).toString();
+                        ).orElse(principal.getName()).toString();
 
         System.out.println("SAML EMAIL = " + email);
 
         Users user = usersRepository.findByEmail(email);
-
         String loginMode = LoginModes.KEYCLOCK_SAML;
 
         if (user == null) {
-
             user = new Users();
-
             user.setEmail(email);
             user.setUsername(principal.getName());
-
-            user.setPassword(
-                    passwordEncoder.encode(email)
-            );
-
+            user.setPassword(passwordEncoder.encode(email));
             user.setRegistration_mode(loginMode);
-
             user = usersRepository.save(user);
-
             System.out.println("USER CREATED = " + user.getId());
         }
 
-        session.setAttribute(
-                SessionAttribute.USER,
-                user
-        );
+        session.setAttribute(SessionAttribute.USER, user);
 
-        System.out.println(
-                "SESSION USER SAVED = "
-                        + session.getAttribute(
-                        SessionAttribute.USER
-                )
-        );
-
+        System.out.println("SESSION USER SAVED = " + session.getAttribute(SessionAttribute.USER));
         LoginAudit loginAudit = new LoginAudit();
 
         loginAudit.setUser(user);
@@ -92,18 +74,9 @@ public class SamlLoginRouterController {
         model.addAttribute("id", user.getId());
         model.addAttribute("username", user.getUsername());
         model.addAttribute("email", user.getEmail());
-        model.addAttribute(
-                "registration_mode",
-                user.getRegistration_mode()
-        );
-        model.addAttribute(
-                "loginMode",
-                loginMode
-        );
-        System.out.println(
-                "SESSION USER SAVED => "
-                        + session.getAttribute(SessionAttribute.USER)
-        );
+        model.addAttribute("registration_mode", user.getRegistration_mode());
+        model.addAttribute("loginMode", loginMode);
+        System.out.println("SESSION USER SAVED => " + session.getAttribute(SessionAttribute.USER));
         System.out.println("REDIRECTING TO DASHBOARD");
 
 

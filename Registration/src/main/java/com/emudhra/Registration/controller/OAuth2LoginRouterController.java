@@ -26,24 +26,8 @@ public class OAuth2LoginRouterController {
     private UserService userService;
     @Autowired
     private LoginAuditRepository loginAuditRepository;
-//    @Autowired
-//    private GoogleLoginController googleLoginController;
-//    @Autowired
-//    private GithubLoginController githubLoginController;
-//    @Autowired
-//    private EmudhraLoginController emudhraLoginController;
-//    @Autowired
-//    private OAuth2AuthorizedClientService clientService;
+
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-//    public OAuth2LoginRouterController(GoogleLoginController googleLoginController,
-//                                       GithubLoginController githubLoginController,
-//                                       EmudhraLoginController emudhraLoginController) {
-//        this.googleLoginController = googleLoginController;
-//        this.githubLoginController = githubLoginController;
-//        this.emudhraLoginController = emudhraLoginController;
-//    }
-
     @GetMapping("/oauth2/success")
     public String oauth2Success(OAuth2AuthenticationToken authentication,
                                 @AuthenticationPrincipal OAuth2User principal,
@@ -53,12 +37,7 @@ public class OAuth2LoginRouterController {
         if (principal == null) {
             return "redirect:/login";
         }
-
-
-        System.out.println(
-                "SESSION SAVED = "
-                        + session.getAttribute(SessionAttribute.USER)
-        );
+        System.out.println("SESSION SAVED = " + session.getAttribute(SessionAttribute.USER));
 
         try {
 
@@ -68,46 +47,47 @@ public class OAuth2LoginRouterController {
             String name = "User";
 
             if (attributes.get("email") != null)
-            {
-                email = attributes.get("email").toString();
-            }
+                {email = attributes.get("email").toString();}
             else if (attributes.get("preferred_username") != null)
-            {
-                email = attributes.get("preferred_username").toString();
-            }
+                {email = attributes.get("preferred_username").toString();}
             else if (attributes.get("sub") != null)
-            {
-                email = attributes.get("sub").toString(); // fallback
-            }
+                {email = attributes.get("sub").toString(); }
+            if (attributes.get("name") != null)
+                {name = attributes.get("name").toString();}
+            if (email == null)
+                {throw new RuntimeException("Email not found from OAuth provider");}
 
-            if (attributes.get("name") != null) {
-                name = attributes.get("name").toString();
-            }
-
-            if (email == null) {
-                throw new RuntimeException("Email not found from OAuth provider");
-            }
             String registrationId;
             registrationId = authentication.getAuthorizedClientRegistrationId();
             System.out.println("OAuth2 Success Method Called");
             System.out.println("Authentication: " + authentication);
             System.out.println("Principal: " + principal);
+
+            model.addAttribute("loginModes", new String[]{
+                    LoginModes.MANUAL,
+                    LoginModes.SMTP_AUTH,
+                    LoginModes.AUTHENTICATOR,
+                    LoginModes.GITHUB_SSO,
+                    LoginModes.OIDC_SSO,
+                    LoginModes.SAML_SSO,
+                    LoginModes.KEYCLOCK_OIDC,
+                    LoginModes.KEYCLOCK_SAML,
+                    LoginModes.FIREBASE_SSO,
+                    LoginModes.GOOGLE_SSO,
+                    LoginModes.MICROSOFT_SSO,
+                    LoginModes.DEFAULT});
             String loginMode = switch (registrationId.toLowerCase()) {
 
-                case "emudhra" -> LoginModes.OIDC_SSO;
-
-                case "google" -> LoginModes.GOOGLE_SSO;
-
+                case "mail"  -> LoginModes.SMTP_AUTH;
                 case "github" -> LoginModes.GITHUB_SSO;
-
-                case "firebase" -> LoginModes.FIREBASE_SSO;
-
+                case "emudhra" -> LoginModes.OIDC_SSO;
                 case "saml" -> LoginModes.SAML_SSO;
-
                 case "employee-portal" -> LoginModes.KEYCLOCK_OIDC;
-
                 case "employee-portal-2" -> LoginModes.KEYCLOCK_SAML;
-
+                case "Employee-portal" -> LoginModes.KEYCLOCK_JWT;
+                case "firebase" -> LoginModes.FIREBASE_SSO;
+                case "google" -> LoginModes.GOOGLE_SSO;
+                case "microsoft" -> LoginModes.MICROSOFT_SSO;
                 default -> LoginModes.DEFAULT;
             };
 

@@ -5,6 +5,8 @@ import com.emudhra.Registration.constants.SessionAttribute;
 import com.emudhra.Registration.model.LoginAudit;
 import com.emudhra.Registration.model.Users;
 import com.emudhra.Registration.repository.LoginAuditRepository;
+import com.emudhra.Registration.service.KeyclockJwtService;
+//import com.emudhra.Registration.service.KeyclockJwtService;
 import com.emudhra.Registration.service.LoginAuditService;
 import com.emudhra.Registration.service.OAuth2LoginSupport;
 import jakarta.servlet.http.HttpSession;
@@ -29,6 +31,8 @@ public class DashboardController {
     @Autowired
     private OAuth2LoginSupport support;
 
+    public static final KeyclockJwtService keycloakJwtService = new KeyclockJwtService();
+
     @GetMapping("/dashboard")
     public String showDashboardPage(Authentication authentication, HttpServletRequest request, @RequestParam(required = false) String loginMode, HttpSession session, Model model) {
         Users user = null;
@@ -37,6 +41,7 @@ public class DashboardController {
         if (userObj instanceof Users) {
             user = (Users) userObj;
         }
+
         session.setAttribute(SessionAttribute.USER, user);
         if(user == null){
             System.out.println("SESSION USER IS NULL");
@@ -101,16 +106,26 @@ public class DashboardController {
         model.addAttribute("loginModes", new String[]{
                 LoginModes.MANUAL,
                 LoginModes.SMTP_AUTH,
-                LoginModes.FIREBASE_SSO,
-                LoginModes.GOOGLE_SSO,
+                LoginModes.AUTHENTICATOR,
                 LoginModes.GITHUB_SSO,
                 LoginModes.OIDC_SSO,
+                LoginModes.SAML_SSO,
                 LoginModes.KEYCLOCK_OIDC,
                 LoginModes.KEYCLOCK_SAML,
-                LoginModes.SAML_SSO,
+                LoginModes.KEYCLOCK_JWT,
+                LoginModes.FIREBASE_SSO,
+                LoginModes.GOOGLE_SSO,
+                LoginModes.MICROSOFT_SSO,
                 LoginModes.DEFAULT});
         model.addAttribute("loginAudits", loginAuditService.fetchAudits(user.getId(), loginMode));
         System.out.println("SESSION USER => " + session.getAttribute(SessionAttribute.USER));
+
+//        String token =
+//                (String) session.getAttribute("JWT_TOKEN");
+//
+//        if (token == null) {
+//            return "redirect:/jwt-login";
+//        }
 //        System.out.println("header_id => " + request.getHeader("X-User-Id"));
 //        System.out.println("header_username => " + request.getHeader("X-User-Name"));
 //        System.out.println("header_firstname => " + request.getHeader("X-First-Name"));

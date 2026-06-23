@@ -57,33 +57,18 @@ public class MfaController {
             HttpSession session,
             Model model) throws Exception {
 
-        Optional<UserMfa> existing =
-                userMfaRepository.findByUsername(username);
+        Optional<UserMfa> existing = userMfaRepository.findByUsername(username);
 
         if(existing.isPresent()) {
-
-            model.addAttribute(
-                    "error",
-                    "User already registered for MFA");
-
+            model.addAttribute("error", "User already registered for MFA");
             return "mfa-register";
         }
 
-        GoogleAuthenticator gAuth =
-                new GoogleAuthenticator();
-
-        GoogleAuthenticatorKey key =
-                gAuth.createCredentials();
-
+        GoogleAuthenticator gAuth = new GoogleAuthenticator();
+        GoogleAuthenticatorKey key = gAuth.createCredentials();
         String secret = key.getKey();
-
-        session.setAttribute(
-                "pendingUsername",
-                username);
-
-        session.setAttribute(
-                "pendingSecret",
-                secret);
+        session.setAttribute("pendingUsername", username);
+        session.setAttribute("pendingSecret", secret);
 
         String otpUrl =
                 "otpauth://totp/SECUREPass:"
@@ -91,17 +76,9 @@ public class MfaController {
                         + "?secret="
                         + secret
                         + "&issuer=SECUREPass";
-
-        String qrCode =
-                generateQRCode(otpUrl);
-
-        model.addAttribute(
-                "qrCode",
-                qrCode);
-
-        model.addAttribute(
-                "username",
-                username);
+        String qrCode = generateQRCode(otpUrl);
+        model.addAttribute("qrCode", qrCode);
+        model.addAttribute("username", username);
 
         return "QR";
     }
@@ -112,17 +89,10 @@ public class MfaController {
             HttpSession session,
             Model model) {
 
-        String secret =
-                (String) session.getAttribute(
-                        "pendingSecret");
+        String secret = (String) session.getAttribute("pendingSecret");
+        GoogleAuthenticator gAuth = new GoogleAuthenticator();
 
-        GoogleAuthenticator gAuth =
-                new GoogleAuthenticator();
-
-        boolean valid =
-                gAuth.authorize(
-                        secret,
-                        Integer.parseInt(otp));
+        boolean valid = gAuth.authorize(secret, Integer.parseInt(otp));
 
         if(!valid) {
             model.addAttribute("error", "Invalid OTP");
@@ -174,8 +144,7 @@ public class MfaController {
             HttpSession session,
             Model model) {
 
-        Users user =
-                userRepository.findByUsername(username);
+        Users user = userRepository.findByUsername(username);
 
         if (user == null) {
             model.addAttribute("error", "User not found");
@@ -211,7 +180,7 @@ public class MfaController {
         audit.setUser(user);
         audit.setSessionId(session.getId());
         audit.setLoginAt(LocalDateTime.now());
-        audit.setLoginMode("AUTHENTICATOR");
+        audit.setLoginMode(LoginModes.AUTHENTICATOR);
 
         loginAuditRepository.save(audit);
 

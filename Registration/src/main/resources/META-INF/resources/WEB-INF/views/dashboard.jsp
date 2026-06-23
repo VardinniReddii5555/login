@@ -204,6 +204,27 @@
                 <div class="col-md-6">
                     <div class="detail-box">
                         <div class="text-muted small mb-2">
+                            Name
+                        </div>
+                        <div class="fw-semibold">
+                            ${name}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="text-muted small mb-2">
+                            Email Address
+                        </div>
+                        <div class="fw-semibold">
+                            ${email}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="detail-box">
+                        <div class="text-muted small mb-2">
                             Registration Mode
                         </div>
                         <span class="badge bg-primary badge-modern">
@@ -219,16 +240,6 @@
                         <span class="badge bg-success badge-modern">
                             ${loginMode}
                         </span>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="detail-box">
-                        <div class="text-muted small mb-2">
-                            Email Address
-                        </div>
-                        <div class="fw-semibold">
-                            ${email}
-                        </div>
                     </div>
                 </div>
 

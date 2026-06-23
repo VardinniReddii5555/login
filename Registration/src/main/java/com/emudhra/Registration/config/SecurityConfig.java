@@ -18,6 +18,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.saml2.provider.service.web.authentication.Saml2WebSsoAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -48,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/", "/home", "/login", "/register","/logout",
                                             "/otp", "/send-otp", "/verify-otp",
+                                            "/jwt-login/**", "/jwt-login", "/jwt-authenticate",
                                             "/google-login", "/api/emudhra/**",
                                             "/saml2/**", "/login/saml2/**",
                                             "/oauth2/**", "/login/oauth2/**",
@@ -85,6 +88,9 @@ public class SecurityConfig {
                         .clearAuthentication(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
+                )
+                .oauth2ResourceServer(oauth ->
+                        oauth.jwt(Customizer.withDefaults())
                 )
 //                .addFilterBefore(
 //                        headerAuthenticationFilter,
@@ -127,6 +133,14 @@ public class SecurityConfig {
                     "name"
             );
         };
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder() {
+
+        return NimbusJwtDecoder.withJwkSetUri(
+                "http://10.80.241.94:9091/realms/EmployeePortal/protocol/openid-connect/certs"
+        ).build();
     }
 
     @Bean

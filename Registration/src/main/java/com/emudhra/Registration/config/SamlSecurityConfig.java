@@ -35,62 +35,47 @@ public class SamlSecurityConfig {
                         .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/keycloak")
                         .singleLogoutServiceLocation("{baseUrl}/logout/saml2/slo")
                         .assertingPartyMetadata(party -> party
-                                .entityId("http://localhost:9091/realms/EmployeePortal")
-                                .singleSignOnServiceLocation("http://localhost:9091/realms/EmployeePortal/protocol/saml")
+                                .entityId("http://10.80.241.94:9091/realms/EmployeePortal")
+                                .singleSignOnServiceLocation("http://10.80.241.94:9091/realms/EmployeePortal/protocol/saml")
                                 .wantAuthnRequestsSigned(false)
-                                .singleLogoutServiceLocation("{baseurl}/logout/saml2/slo")
+                                .singleLogoutServiceLocation("{baseUrl}/logout/saml2/slo")
                                 .verificationX509Credentials(c -> c.add(verificationCredential)))
                         .build();
+        System.out.println("Certificate Subject: " + certificate.getSubjectX500Principal());
+
+
 
 
 //        EMUDHRA SAML
         RelyingPartyRegistration emudhraRegistration =
                 RelyingPartyRegistration
                         .withRegistrationId("emudhra")
-                        .entityId("http://10.80.241.94:9090/saml2/service-provider-metadata/emudhra")
-                        .assertionConsumerServiceLocation("http://10.80.241.94:9090/login/saml2/sso/emudhra")
+                        .entityId("{baseUrl}/saml2/service-provider-metadata/emudhra")
+                        .assertionConsumerServiceLocation("{baseUrl}/login/saml2/sso/emudhra")
 //                        .singleLogoutServiceLocation("{baseUrl}/logout/saml2/slo")
-//                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress")
                         .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified")
-//                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format::X509SubjectName")
-//                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:transient")
-//                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:persistent")
-//                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:entity")
-//                        .nameIdFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:encrypted")
-
                         .assertingPartyMetadata(party -> party
                                 .entityId("https://demo.securepass.me/SPAuthPage/saml/metadata")
                                 .singleSignOnServiceLocation("https://demo.securepass.me/SPAuthPage/saml2/sso/1")
                                 .wantAuthnRequestsSigned(false)
-//                                .singleLogoutServiceLocation("{baseurl}/logout/saml2/slo")
+//                                .singleLogoutServiceLocation("{baseUrl}/logout/saml2/slo")
                                 .verificationX509Credentials(c -> c.add(verificationCredential)))
                         .build();
-        System.out.println(
-                "Certificate Subject: "
-                        + certificate.getSubjectX500Principal()
-        );
 
+        System.out.println("Certificate Subject: " + verificationCredential().getCertificate());
         return new InMemoryRelyingPartyRegistrationRepository(keycloakRegistration, emudhraRegistration);
     }
 
         @Bean
         public Saml2X509Credential verificationCredential() throws Exception {
 
-            ClassPathResource resource =
-                    new ClassPathResource("emudhra.crt");
-
+            ClassPathResource resource = new ClassPathResource("emudhra.crt");
             System.out.println("Exists = " + resource.exists());
             System.out.println("Length = " + resource.contentLength());
-
             InputStream is = resource.getInputStream();
-
             System.out.println("InputStream = " + is);
-
-            CertificateFactory factory =
-                    CertificateFactory.getInstance("X.509");
-
-            X509Certificate certificate1 =
-                    (X509Certificate) factory.generateCertificate(is);
+            CertificateFactory factory = CertificateFactory.getInstance("X.509");
+            X509Certificate certificate1 = (X509Certificate) factory.generateCertificate(is);
 
             return Saml2X509Credential.verification(certificate1);
         }
