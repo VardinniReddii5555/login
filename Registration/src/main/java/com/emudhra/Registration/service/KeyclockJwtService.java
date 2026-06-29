@@ -13,13 +13,13 @@ public class KeyclockJwtService{
 
 
         private static final String TOKEN_URL =
-                "http://10.80.241.94:9091/realms/EmployeePortal/protocol/openid-connect/token";
+                "http://10.80.241.113:9091/realms/EmployeePortal/protocol/openid-connect/token";
 
         private static final String CLIENT_ID =
                 "Employee_portal";
 
         private static final String CLIENT_SECRET =
-                "PXhO6I1XsMj0IvF7hbqf2POfku79fgQ2";
+                "hzQzuAVtiMjcIRdqCxWaE8jgzVT1g8h0";
 
         public JwtTokenResponse authenticate(String username, String password) {
 

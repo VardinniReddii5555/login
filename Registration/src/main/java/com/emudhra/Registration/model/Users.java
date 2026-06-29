@@ -22,22 +22,27 @@ public class Users {
     @Column(nullable = false, length = 30)
     private String registration_mode;
 
+    @Column(name = "push_registered")
+    private Boolean pushRegistered = false;
+
+    @Column(name = "device_id", length = 255)
+    private String deviceId;
 
     // Getters & Setters
 
 
-    public Users() {
-
-    }
+    public Users() {}
 
     @Override
     public String toString() {
         return "Users{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", registration_mode='" + registration_mode + '\'' +
-
+                ", pushRegistered=" + pushRegistered +
+                ", deviceId='" + deviceId + '\'' +
                 '}';
     }
 
@@ -79,5 +84,21 @@ public class Users {
 
     public void setRegistration_mode(String registration_mode) {
         this.registration_mode = registration_mode;
+    }
+
+    public Boolean getPushRegistered() {
+        return pushRegistered;
+    }
+
+    public void setPushRegistered(Boolean pushRegistered) {
+        this.pushRegistered = pushRegistered;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 }

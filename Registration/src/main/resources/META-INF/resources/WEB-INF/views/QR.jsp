@@ -33,11 +33,10 @@
                         </div>
                     </c:if>
 
-                    <form action="${pageContext.request.contextPath}/verify-registration"  method="post" class="d-grid gap-3>
+                    <form action="${pageContext.request.contextPath}/verify-registration"  method="post" class="d-grid gap-3">
 
-                        <input type="hidden"
-                               name="username"
-                               value="${username}">
+                        <input type="hidden" name="username" value="${param.username}">
+
                         <div class="text-center mt-4 mb-2">    <label class="fw-semibold">  Enter Verification Code </label>    </div>
                         <div class="d-flex justify-content-center gap-2 mb-4">
                             <input type="text" maxlength="1" class="form-control otp-input text-center">
